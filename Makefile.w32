@@ -1,4 +1,4 @@
-# Poner aca las rutas a los directorios de instalacion de ZinjaI
+# Poner aca las rutas a los directorios de instalacion de ZinjaI y SFML
 ZINJA_DIR="C:/Program Files (x86)/zinjai"
 SFML_DIR="D:/Program Files (x86)/SFML-2.4.2"
 
