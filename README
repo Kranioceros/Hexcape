@@ -1,0 +1,6 @@
+Este es un proyecto de ZinjaI que usa Makefiles para poder obtener ejecutables 
+tanto en Windows como en Linux.
+
+Hexgen es un generador de laberintos hexagonales que usa SFML como libreria
+grafica.
+

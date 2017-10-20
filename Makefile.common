@@ -1,0 +1,9 @@
+OBJS=${OBJS_DIR}/main.o 
+TESTS=${TESTS_DIR}/prueba_sfml
+
+${OBJS_DIR}/main.o: main.cpp
+	${GPP} ${FLAGS} -c main.cpp -o $@
+
+# Una pequeña prueba en SFML para comprobar que esta bien instalado
+${TESTS_DIR}/prueba_sfml: $(TESTS_DIR)/prueba_sfml.cpp
+	$(GPP) $(TESTS_DIR)/prueba_sfml.cpp $(FLAGS) $(LIBS) -o $@

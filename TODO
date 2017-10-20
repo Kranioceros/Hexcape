@@ -1,0 +1,11 @@
+TODO:
+	+ Diseñar clases para la Pantalla, la Grilla y el Laberinto. La
+	Pantalla debe ser capaz de dibujar el laberinto representado por la
+	grilla. Ademas, debe poder manejar la vista del usuario, el zoom, la
+	rotacion, la interfaz grafica y la entrada del usuario.
+	La grilla puede ser un simple struct con un vector bidimensional cuyos
+	elementos son las celdas. Las celdas pueden ser un enum que representa
+	los estados posibles de las mismas. La grilla puede contener ademas los
+	bitmaps necesarios para dibujar cada celda individual.
+	La clase Laberinto va a ser la mas importante y es la responsable de
+	crear la grilla y modificarla a medida que se van dando los eventos.
