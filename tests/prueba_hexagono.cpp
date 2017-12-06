@@ -14,7 +14,6 @@ int main() {
 	int ancho_pantalla = 300, alto_pantalla = 300;
 	
 	float lado = 80; float grosor = 20;
-	int altura_lado = sqrt(pow(lado, 2)- pow(0.5 * lado, 2));
 	
 	float origenx = ancho_pantalla / 2, origeny = alto_pantalla / 2;
 	
