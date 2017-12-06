@@ -4,7 +4,7 @@
 float calcX(float xh, float yh, float altura, float grosor);
 float calcY(float yh, float lado, float grosor);
 
-void dibujarGrilla(sf::RenderWindow& w, Grilla &g, float lado, float grosor, float x, float y,
+void dibujarGrilla(sf::RenderWindow& w, const Grilla &g, float lado, float grosor, float x, float y,
 		sf::Color relleno, sf::Color borde)
 {
 	float altura_lado = sqrt(pow(lado, 2)- pow(0.5 * lado, 2));
@@ -28,7 +28,7 @@ void dibujarGrilla(sf::RenderWindow& w, Grilla &g, float lado, float grosor, flo
 			float xr = x + calcX(xh, yh, altura_lado, grosor),
 			      yr = y + calcY(yh, lado, grosor);
 
-			Celda &celda = g.celda(yh, xh);
+			const Celda &celda = g.celda(yh, xh);
 
 			/* Se dibuja la celda que corresponda */
 			if (celda.hueca) {
