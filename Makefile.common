@@ -1,5 +1,5 @@
 OBJS=${OBJS_DIR}/main.o 
-TESTS=${TESTS_DIR}/prueba_sfml
+TESTS=${TESTS_DIR}/prueba_sfml ${TESTS_DIR}/prueba_grilla ${TESTS_DIR}/prueba_hexagono ${TESTS_DIR}/prueba_pathfinding
 
 ${OBJS_DIR}/main.o: main.cpp
 	${GPP} ${FLAGS} -c main.cpp -o $@
@@ -7,3 +7,14 @@ ${OBJS_DIR}/main.o: main.cpp
 # Una pequeña prueba en SFML para comprobar que esta bien instalado
 ${TESTS_DIR}/prueba_sfml: $(TESTS_DIR)/prueba_sfml.cpp
 	$(GPP) $(TESTS_DIR)/prueba_sfml.cpp $(FLAGS) $(LIBS) -o $@
+	
+# Una prueba para verificar que el algoritmo generador de laberintos funciona
+${TESTS_DIR}/prueba_grilla: $(TESTS_DIR)/prueba_grilla.cpp
+	$(GPP) $(TESTS_DIR)/prueba_grilla.cpp Laberinto.cpp DibujoSimple.cpp $(FLAGS) $(LIBS) -o $@
+
+${TESTS_DIR}/prueba_hexagono: $(TESTS_DIR)/prueba_hexagono.cpp
+	$(GPP) $(TESTS_DIR)/prueba_hexagono.cpp Laberinto.cpp $(FLAGS) $(LIBS) -o $@
+
+# Una prueba para probar pathfinding dentro del laberinto
+${TESTS_DIR}/prueba_pathfinding: $(TESTS_DIR)/prueba_pathfinding.cpp
+	$(GPP) $(TESTS_DIR)/prueba_pathfinding.cpp Laberinto.cpp $(FLAGS) $(LIBS) -o $@
