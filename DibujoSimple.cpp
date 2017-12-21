@@ -28,7 +28,7 @@ void dibujarGrilla(sf::RenderWindow& w, const Grilla &g, float lado, float groso
 			float xr = x + calcX(xh, yh, altura_lado, grosor),
 			      yr = y + calcY(yh, lado, grosor);
 
-			const Celda &celda = g.celda(yh, xh);
+			const Celda &celda = g.celda(Coordenadas(xh, yh));
 
 			/* Se dibuja la celda que corresponda */
 			if (celda.hueca) {
@@ -64,7 +64,7 @@ void dibujarAberturas(sf::RenderWindow& w, const Grilla &g, float lado, float gr
 			      yr = y + calcY(yh, lado, grosor);
 
 			/* NE */
-			if (g.celda(yh, xh).aberturas[0]) {
+			if (g.celda(Coordenadas(xh, yh)).aberturas[0]) {
 				rec.setOrigin(0, 0);
 				rec.setPosition(  xr + cosf(PI/6.0)*lado*(1-porcentaje)*0.5
 						, yr - (lado - sinf(PI/6.0)*lado*(1-porcentaje)*0.5));
@@ -72,14 +72,14 @@ void dibujarAberturas(sf::RenderWindow& w, const Grilla &g, float lado, float gr
 				w.draw(rec);
 			}	
 			/* E */
-			if (g.celda(yh, xh).aberturas[1]) {
+			if (g.celda(Coordenadas(xh, yh)).aberturas[1]) {
 				rec.setOrigin(0, 0);
 				rec.setPosition(xr + altura_lado, yr - (0.5*lado-(1-porcentaje)/2*lado));
 				rec.setRotation(0);
 				w.draw(rec);
 			}	
 			/* SE */
-			if (g.celda(yh, xh).aberturas[2]) {
+			if (g.celda(Coordenadas(xh, yh)).aberturas[2]) {
 				rec.setOrigin(0, porcentaje*lado);
 				rec.setPosition(  xr + cosf(PI/6.0)*lado*(1-porcentaje)*0.5
 						, yr + (lado - sinf(PI/6.0)*lado*(1-porcentaje)*0.5));
@@ -87,7 +87,7 @@ void dibujarAberturas(sf::RenderWindow& w, const Grilla &g, float lado, float gr
 				w.draw(rec);
 			}	
 			/* SO */
-			if (g.celda(yh, xh).aberturas[3]) {
+			if (g.celda(Coordenadas(xh, yh)).aberturas[3]) {
 				rec.setOrigin(grosor, porcentaje*lado);
 				rec.setPosition(  xr - cosf(PI/6.0)*lado*(1-porcentaje)*0.5
 						, yr + (lado - sinf(PI/6.0)*lado*(1-porcentaje)*0.5));
@@ -95,14 +95,14 @@ void dibujarAberturas(sf::RenderWindow& w, const Grilla &g, float lado, float gr
 				w.draw(rec);
 			}	
 			/* O */
-			if (g.celda(yh, xh).aberturas[4]) {
+			if (g.celda(Coordenadas(xh, yh)).aberturas[4]) {
 				rec.setOrigin(0, 0);
 				rec.setPosition(xr - altura_lado - grosor, yr - (0.5*lado-(1-porcentaje)/2*lado));
 				rec.setRotation(0);
 				w.draw(rec);
 			}	
 			/* NO */
-			if (g.celda(yh, xh).aberturas[5]) {
+			if (g.celda(Coordenadas(xh, yh)).aberturas[5]) {
 				rec.setOrigin(grosor, 0);
 				rec.setPosition(  xr - cosf(PI/6.0)*lado*(1-porcentaje)*0.5
 						, yr - (lado - sinf(PI/6.0)*lado*(1-porcentaje)*0.5));

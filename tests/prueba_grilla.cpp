@@ -1,39 +1,33 @@
 #include "../headers/Laberinto.h"
-#include "../headers/DibujoSimple.h"
+#include "../headers/Dibujo.h"
 #include <cmath>
+#include <iostream>
+#include <ctime>
 
 int main() {
-	int ancho_pantalla = 1024, alto_pantalla = 768;
+	int ancho_pantalla = 1100, alto_pantalla = 900;
+
+	sf::Texture tileset; tileset.loadFromFile("assets/hexagonos-2080x2400-debug.png");
 	
-	float lado = 90; float grosor = 30;
-	float altura_lado = sqrt(pow(lado, 2)- pow(0.5 * lado, 2));
+	LabParams params;
+	params.alto = params.ancho = 3;
+	params.entrada_x = params.entrada_y = 0;
+	params.semilla = time(nullptr);
 	
-	/* Posicion del primer hexagono de la grilla. Es el origen (0, 0). */
-	float origenx = altura_lado + grosor, origeny = lado + grosor;
-
-	/* EL SIGUIENTE CODIGO ES UNA GRILLA DE EJEMPLO. REEMPLAZAR CON UN OBJETO DE CLASE
-	LABERINTO Y LUEGO USAR LA GRILLA GENERADA PARA IMPRIMIR */
-
-	const bool este[] = {0, 1, 0, 0, 0, 0};
-	Celda cel_este(este);
-	const bool oeste[] = {0, 0, 0, 0, 1, 0};
-	Celda cel_oeste(oeste);
-	const bool esteoeste[] = {0, 1, 0, 0, 1, 0};
-	Celda cel_esteoeste(esteoeste);
-
-	std::vector < std::vector <Celda> > celdas =
-	{ {cel_este, cel_oeste, Celda()}
-	 ,{Celda(), cel_este, cel_oeste}
-	 ,{cel_este, cel_esteoeste, cel_oeste} };
-
-	Grilla g(celdas); 
-	g.celda(0, 2).hueca = g.celda(1, 0).hueca = false;
-	g.celda(2, 2).salida = true;
-	g.celda(0, 0).entrada = true;
-	g.celda(2, 0).aberturas[0] = g.celda(1, 1).aberturas[3] = true;
-	g.celda(1, 2).aberturas[2] = g.celda(2, 2).aberturas[5] = true;
-
-	/* Termina codigo ejemplo */
+	Laberinto lab(params);
+	
+	const Grilla g = lab.VerGrilla();
+	
+	for(int fila = 0; fila < g.alto(); fila++) {
+		for(int col = 0; col < g.ancho(); col++) {
+			std::cout << "[";
+			for(int abert = 0; abert < 6; abert++) {
+				std::cout << " " << g.celda(Coordenadas(col, fila)).aberturas[abert] << " ";
+			}
+			std::cout << "], ";
+		}
+		std::cout << std::endl;
+	}
 
 	sf::RenderWindow window(sf::VideoMode(ancho_pantalla, alto_pantalla)
 				, "prueba_grilla"
@@ -51,8 +45,7 @@ int main() {
 
 			window.clear(sf::Color::Black);
 
-			dibujarGrilla(window, g, lado, grosor, origenx, origeny, sf::Color::Blue, sf::Color::Red);
-			dibujarAberturas(window, g, lado, grosor, 0.70, origenx, origeny, sf::Color::Green);
+			dibujarGrilla(window, g, tileset, 0, 50);
 
 			window.display();
 		}
