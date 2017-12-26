@@ -2,7 +2,6 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
-#include <tuple>
 
 bool Coordenadas::operator==(const Coordenadas &x) const {
 	return this->x == x.x && this->y == x.y;
@@ -11,9 +10,9 @@ bool Coordenadas::operator==(const Coordenadas &x) const {
 /* Constructor por defecto. Genera una grilla de ancho x alto con celdas default. */
 Grilla::Grilla(unsigned int ancho, unsigned int alto) {
 	/* Se crea un vector de vectores */
-	m_celdas.resize(alto);
+	m_celdas.resize(ancho);
 	for ( std::vector<Celda> &fila : m_celdas) {
-		fila.resize(ancho, Celda());
+		fila.resize(alto, Celda());
 	}
 
 	m_alto = alto; m_ancho = ancho;
@@ -94,12 +93,11 @@ void Laberinto::generarlab(unsigned int xh, unsigned int yh){
 		/* romper paredeis */
 
 		cel_actual->aberturas[dir_actual_int] = true;
-//		if (i < 4) {
 		if (dir_actual_int >= 3) {
 			cel_nueva.aberturas[(dir_actual_int + 3) % 6] = true;
 		}  else { 
 			cel_nueva.aberturas[dir_actual_int + 3] = true;
-		}//}
+		}
 		
 		std::cout << "Paredes de cel_actual" << std::endl;
 		imprimirParedes(*cel_actual);
@@ -138,8 +136,9 @@ bool Laberinto::estaDentro(Coordenadas pos, Coordenadas dir) {
 	int x = pos.x, y = pos.y;
 	int nuevo_x = x + dir.x, nuevo_y = y + dir.y;
 	bool res = nuevo_x >= 0 && nuevo_y >= 0 && nuevo_x < Cuadro.ancho() && nuevo_y < Cuadro.alto();
-	if (!res) std::cout<<"No esta dentro de la grilla"<<std::endl;
-	
+
+	if (!res)
+		std::cout<<"No esta dentro de la grilla"<<std::endl;
 		
 	return res;
 }

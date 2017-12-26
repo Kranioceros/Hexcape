@@ -5,13 +5,15 @@
 #include <ctime>
 
 int main() {
-	int ancho_pantalla = 1100, alto_pantalla = 900;
+	int ancho_pantalla = 1920, alto_pantalla = 1080;
 
 	sf::Texture tileset; tileset.loadFromFile("assets/hexagonos-2080x2400-debug.png");
 	
 	LabParams params;
-	params.alto = params.ancho = 3;
-	params.entrada_x = params.entrada_y = 0;
+	params.alto = 4;
+	params.ancho = 6;
+	params.entrada_x = 0;
+	params.entrada_y = 0;
 	params.semilla = time(nullptr);
 	
 	Laberinto lab(params);

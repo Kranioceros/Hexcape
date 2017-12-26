@@ -21,8 +21,8 @@ void dibujarGrilla(sf::RenderWindow& w, const Grilla &g, const sf::Texture &tile
 		);
 	}
 
-	for(int xh=0; xh < g.alto(); xh++) {
-		for (int yh=0; yh < g.ancho(); yh++) {
+	for(int xh=0; xh < g.ancho(); xh++) {
+		for (int yh=0; yh < g.alto(); yh++) {
 			const Celda &c = g.celda(Coordenadas(xh, yh));
 
 			if (c.visible == false)
