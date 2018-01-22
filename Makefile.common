@@ -9,16 +9,20 @@ ${TESTS_DIR}/prueba_sfml: $(TESTS_DIR)/prueba_sfml.cpp
 	$(GPP) $(TESTS_DIR)/prueba_sfml.cpp $(FLAGS) $(LIBS) -o $@
 	
 # Una prueba para verificar que el algoritmo generador de laberintos funciona
-${TESTS_DIR}/prueba_grilla: $(TESTS_DIR)/prueba_grilla.cpp
+${TESTS_DIR}/prueba_grilla: $(TESTS_DIR)/prueba_grilla.cpp Laberinto.cpp Dibujo.cpp
 	$(GPP) $(TESTS_DIR)/prueba_grilla.cpp Laberinto.cpp Dibujo.cpp $(FLAGS) $(LIBS) -o $@
 
-${TESTS_DIR}/prueba_hexagono: $(TESTS_DIR)/prueba_hexagono.cpp
+${TESTS_DIR}/prueba_hexagono: $(TESTS_DIR)/prueba_hexagono.cpp Laberinto.cpp
 	$(GPP) $(TESTS_DIR)/prueba_hexagono.cpp Laberinto.cpp $(FLAGS) $(LIBS) -o $@
 
 # Una prueba para probar pathfinding dentro del laberinto
-${TESTS_DIR}/prueba_pathfinding: $(TESTS_DIR)/prueba_pathfinding.cpp
+${TESTS_DIR}/prueba_pathfinding: $(TESTS_DIR)/prueba_pathfinding.cpp Laberinto.cpp
 	$(GPP) $(TESTS_DIR)/prueba_pathfinding.cpp Laberinto.cpp $(FLAGS) $(LIBS) -o $@
 
 # Una prueba del tileset
-${TESTS_DIR}/prueba_tileset: $(TESTS_DIR)/prueba_tileset.cpp
+${TESTS_DIR}/prueba_tileset: $(TESTS_DIR)/prueba_tileset.cpp Laberinto.cpp
 	$(GPP) $(TESTS_DIR)/prueba_tileset.cpp Laberinto.cpp $(FLAGS) $(LIBS) -o $@
+
+# Una prueba para verificar el funcionamiento de boundingbox (local y global)
+${TESTS_DIR}/prueba_boundingbox: $(TESTS_DIR)/prueba_boundingbox.cpp Collision.cpp Laberinto.cpp Dibujo.cpp
+	$(GPP) $(TESTS_DIR)/prueba_boundingbox.cpp Collision.cpp Laberinto.cpp Dibujo.cpp $(FLAGS) $(LIBS) -o $@
