@@ -1,9 +1,9 @@
 # Poner aca las rutas a los directorios de instalacion de ZinjaI y SFML
 ZINJA_DIR="C:/Program Files (x86)/zinjai"
-SFML_DIR="D:/Program Files (x86)/SFML-2.4.2"
+SFML_DIR="E:/SFML-2.4.2"
 
-ZINJA_GCC_INCLUDE_DIR=${ZINJA_DIR}/mingw32-gcc/include
-ZINJA_GCC_LIB_DIR=${ZINJA_DIR}/mingw32-gcc/libs
+ZINJA_GCC_INCLUDE_DIR=${ZINJA_DIR}/mingw32-gcc6/include
+ZINJA_GCC_LIB_DIR=${ZINJA_DIR}/mingw32-gcc6/libs
 SFML_INCLUDE_DIR=${SFML_DIR}/include
 SFML_LIB_DIR=${SFML_DIR}/lib
 
