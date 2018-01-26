@@ -7,7 +7,7 @@ int nroTile(const bool *arr) {
 	}
 	return res;
 }
-void dibujarGrilla(sf::RenderWindow& w, const Grilla &g, const sf::Texture &tileset, float x, float y) {
+void dibujarGrilla(sf::RenderWindow& w, const Grilla &g, const sf::Texture &tileset, const sf::Texture &escotillas, float x, float y) {
 	float lado = 150, altura_lado = 130;
 	float ancho = 2*altura_lado, alto = 2*lado;
 
@@ -21,6 +21,11 @@ void dibujarGrilla(sf::RenderWindow& w, const Grilla &g, const sf::Texture &tile
 		);
 	}
 
+	/* Sprite sencillo con la escotillas cerrada */
+	sf::Sprite spr_escotillas; spr_escotillas.setTexture(escotillas);
+	spr_escotillas.setTextureRect(sf::IntRect(0, 0, 86, 86));
+	spr_escotillas.setOrigin(43, 43);
+
 	for(int xh=0; xh < g.ancho(); xh++) {
 		for (int yh=0; yh < g.alto(); yh++) {
 			const Celda &c = g.celda(Coordenadas(xh, yh));
@@ -32,8 +37,10 @@ void dibujarGrilla(sf::RenderWindow& w, const Grilla &g, const sf::Texture &tile
 			int yr = y + yh*(3.0/2)*lado;
 			int nro_tile = nroTile(c.aberturas);
 
+			spr_escotillas.setPosition(xr + altura_lado, yr + lado);
 			sprites[nro_tile].setPosition(xr, yr);
 			w.draw(sprites[nro_tile]);
+			w.draw(spr_escotillas);
 		}
 	}
 }
