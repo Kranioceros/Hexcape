@@ -4,6 +4,7 @@
 #include <stack>
 #include <vector>
 #include <map> 
+#include <SFML/Graphics.hpp>
 
 
 struct LabParams {
@@ -52,21 +53,35 @@ ser que tengas que retocar algo de Grilla y Celda, pero la mayor parte ya esta. 
 
 class Laberinto {
 private:
+	const float lado = 150, altura_lado = 130, alto = 2*lado;
+	const float ancho = 2*altura_lado;
 	Grilla Cuadro;
-	LabParams Parametros;
 	std::stack<Coordenadas> stack;
+	sf::Texture tileset;
+	sf::Texture escotillas;
+	std::vector<sf::Sprite> spr_tiles;
+	std::vector<sf::Sprite> spr_escotillas;
 	bool puedeMoverse(Coordenadas pos, Coordenadas dir);
 	bool estaDentro(Coordenadas pos, Coordenadas dir);
 	void imprimirParedes(const Celda& c);
+	void generarlab(unsigned int xh, unsigned int yh);
+
+	int nroTile(const bool *arr) {
+		int res = 0;
+		for(int i=0; i < 6; i++) {
+			res += arr[i] << (6-i-1);
+		}
+		return res;
+	}
+
 	Coordenadas obtenerDir(Coordenadas pos, int &n);
 public:
 	Laberinto();
+	Laberinto(unsigned int semilla, unsigned int e_x, unsigned int e_y, unsigned int alto, unsigned int ancho);
 	Laberinto(const LabParams &p);
-	void generarlab(unsigned int yh, unsigned int xh);
 	Grilla VerGrilla();
+	void DibujarLab(sf::RenderWindow &w, float x, float y);
 };
-
-
 
 
 #endif

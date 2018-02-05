@@ -3,7 +3,7 @@ TESTS_DIR=tests
 GPP=g++
 GCC=gcc
 FLAGS=-fshow-column  -g2 -Wall -O0  -D_DEBUG -g -std=c++11
-LIBS=-lsfml-graphics -lsfml-window -lsfml-system
+LIBS=-lsfml-audio -lsfml-graphics -lsfml-window -lsfml-system
 
 all: tests ${OBJS_DIR} ${OBJS_DIR}/Project.bin
 

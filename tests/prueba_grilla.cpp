@@ -1,5 +1,4 @@
 #include "../headers/Laberinto.h"
-#include "../headers/Dibujo.h"
 #include <cmath>
 #include <iostream>
 #include <ctime>
@@ -7,8 +6,6 @@
 int main() {
 	int ancho_pantalla = 1920, alto_pantalla = 1080;
 
-	sf::Texture tileset; tileset.loadFromFile("assets/hexagonos-2080x2400-debug.png");
-	
 	LabParams params;
 	params.alto = 4;
 	params.ancho = 6;
@@ -16,20 +13,21 @@ int main() {
 	params.entrada_y = 0;
 	params.semilla = time(nullptr);
 	
-	Laberinto lab(params);
+//	Laberinto lab(params);
+	Laberinto lab(time(nullptr), 0, 0, 4, 6);
 	
 	const Grilla g = lab.VerGrilla();
 	
-	for(int fila = 0; fila < g.alto(); fila++) {
-		for(int col = 0; col < g.ancho(); col++) {
-			std::cout << "[";
-			for(int abert = 0; abert < 6; abert++) {
-				std::cout << " " << g.celda(Coordenadas(col, fila)).aberturas[abert] << " ";
-			}
-			std::cout << "], ";
-		}
-		std::cout << std::endl;
-	}
+//	for(int fila = 0; fila < g.alto(); fila++) {
+//		for(int col = 0; col < g.ancho(); col++) {
+//			std::cout << "[";
+//			for(int abert = 0; abert < 6; abert++) {
+//				std::cout << " " << g.celda(Coordenadas(col, fila)).aberturas[abert] << " ";
+//			}
+//			std::cout << "], ";
+//		}
+//		std::cout << std::endl;
+//	}
 
 	sf::RenderWindow window(sf::VideoMode(ancho_pantalla, alto_pantalla)
 				, "prueba_grilla"
@@ -47,7 +45,7 @@ int main() {
 
 			window.clear(sf::Color::Black);
 
-			dibujarGrilla(window, g, tileset, 0, 50);
+			lab.DibujarLab(window, 0, 0);
 
 			window.display();
 		}
