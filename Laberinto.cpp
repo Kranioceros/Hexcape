@@ -135,6 +135,7 @@ Laberinto::Laberinto(const LabParams &p) : Cuadro(p.ancho, p.alto), spr_tiles(64
 	/* Se cargan las texturas del disco */
 	tileset.loadFromFile("assets/hexagonos-2080x2400-debug.png");
 	escotillas.loadFromFile("assets/escotillas-516x86.png");
+	robertinho.loadFromFile("assets/robertinho3.png");
 
 	/* Se crea un vector de sprites, cada uno con su respectivo tile del tileset */
 	for(int i=0; i < 64; i++) {
@@ -158,6 +159,7 @@ Laberinto::Laberinto(unsigned int semilla, unsigned int e_x, unsigned int e_y, u
 	/* Se cargan las texturas del disco */
 	tileset.loadFromFile("assets/hexagonos-2080x2400-debug.png");
 	escotillas.loadFromFile("assets/escotillas-516x86.png");
+	robertinho.loadFromFile("assets/robertinho2.png");
 
 	/* Se crea un vector de sprites, cada uno con su respectivo tile del tileset */
 	for(int i=0; i < 64; i++) {
@@ -166,6 +168,32 @@ Laberinto::Laberinto(unsigned int semilla, unsigned int e_x, unsigned int e_y, u
 		spr_tiles[i].setTextureRect(
 			sf::IntRect(ancho*col, alto*fila, ancho, alto+1)
 		);
+	}
+	
+	/* Se crean las paredes que colisionaran con las entidades */
+	for(int yh=0; yh < Cuadro.alto(); yh++) {
+		for(int xh=0; xh < Cuadro.ancho(); xh++) {
+			const Celda &c = Cuadro.celda(Coordenadas(xh, yh));
+			
+			if (!c.aberturas[0]) {
+				paredes.push_back(Pared(xh, yh, 0, robertinho));
+			}
+			if (!c.aberturas[1]) {
+				paredes.push_back(Pared(xh, yh, 1, robertinho));
+			}
+			if (!c.aberturas[2]) {
+				paredes.push_back(Pared(xh, yh, 2, robertinho));
+			}
+			if (!c.aberturas[3]) {
+				paredes.push_back(Pared(xh, yh, 3, robertinho));
+			}
+			if (!c.aberturas[4]) {
+				paredes.push_back(Pared(xh, yh, 4, robertinho));
+			}
+			if (!c.aberturas[5]) {
+				paredes.push_back(Pared(xh, yh, 5, robertinho));
+			}
+		}
 	}
 
 	spr_escotillas[0].setTexture(escotillas);
@@ -229,8 +257,17 @@ void Laberinto::DibujarLab(sf::RenderWindow &w, float x, float y) {
 			spr_escotillas[0].setPosition(xr + altura_lado, yr + lado);
 			spr_tiles[nro_tile].setPosition(xr, yr);
 
-			w.draw(spr_tiles[nro_tile]);
-			w.draw(spr_escotillas[0]);
+//			w.draw(spr_tiles[nro_tile]);
+//			w.draw(spr_escotillas[0]);
 		}
 	}
+	
+	/* Paredes verdes -- debug.lala */
+	for(auto &pared : paredes) {
+		w.draw(pared.verSprite());
+	}
+}
+
+const std::vector<Pared>& Laberinto::verParedes() const {
+	return paredes;
 }

@@ -1,6 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <vector>
 
 class Entity {
 public:

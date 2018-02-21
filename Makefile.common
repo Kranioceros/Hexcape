@@ -1,5 +1,5 @@
 OBJS=${OBJS_DIR}/main.o 
-TESTS=${TESTS_DIR}/prueba_boundingbox
+TESTS=${TESTS_DIR}/prueba_sonido main
 
 #TESTS=${TESTS_DIR}/prueba_sfml ${TESTS_DIR}/prueba_grilla ${TESTS_DIR}/prueba_hexagono ${TESTS_DIR}/prueba_pathfinding ${TESTS_DIR}/prueba_tileset ${TESTS_DIR}/prueba_boundingbox
 
@@ -28,7 +28,11 @@ ${TESTS_DIR}/prueba_tileset: $(TESTS_DIR)/prueba_tileset.cpp Laberinto.cpp
 # Una prueba para verificar el funcionamiento de boundingbox (local y global)
 ${TESTS_DIR}/prueba_boundingbox: $(TESTS_DIR)/prueba_boundingbox.cpp Collision.cpp Laberinto.cpp Dibujo.cpp
 	$(GPP) $(TESTS_DIR)/prueba_boundingbox.cpp Collision.cpp Laberinto.cpp Dibujo.cpp $(FLAGS) $(LIBS) -o $@
+	
+# Una prueba para verificar el funcionamiento del sonido
+${TESTS_DIR}/prueba_sonido: $(TESTS_DIR)/prueba_sonido.cpp
+	$(GPP) $(TESTS_DIR)/prueba_sonido.cpp $(FLAGS) $(LIBS) -o $@
 
 # EL JUEGO!
-main: main.cpp BaseScene.cpp Collision.cpp Game.cpp Laberinto.cpp PlayScene.cpp
-	$(GPP) $(FLAGS) main.cpp BaseScene.cpp Collision.cpp Game.cpp Laberinto.cpp PlayScene.cpp $(LIBS) -o $@
+main: main.cpp BaseScene.cpp Collision.cpp Game.cpp Laberinto.cpp PlayScene.cpp Player.cpp Pared.cpp Bola.cpp
+	$(GPP) $(FLAGS) main.cpp PlayScene.cpp BaseScene.cpp Collision.cpp Game.cpp Laberinto.cpp Player.cpp Pared.cpp Bola.cpp $(LIBS) -o $@

@@ -5,6 +5,7 @@
 #include <vector>
 #include <map> 
 #include <SFML/Graphics.hpp>
+#include "Pared.hpp"
 
 
 struct LabParams {
@@ -59,12 +60,14 @@ private:
 	std::stack<Coordenadas> stack;
 	sf::Texture tileset;
 	sf::Texture escotillas;
+	sf::Texture robertinho;
 	std::vector<sf::Sprite> spr_tiles;
 	std::vector<sf::Sprite> spr_escotillas;
 	bool puedeMoverse(Coordenadas pos, Coordenadas dir);
 	bool estaDentro(Coordenadas pos, Coordenadas dir);
 	void imprimirParedes(const Celda& c);
 	void generarlab(unsigned int xh, unsigned int yh);
+	std::vector<Pared> paredes;
 
 	int nroTile(const bool *arr) {
 		int res = 0;
@@ -81,6 +84,7 @@ public:
 	Laberinto(const LabParams &p);
 	Grilla VerGrilla();
 	void DibujarLab(sf::RenderWindow &w, float x, float y);
+	const std::vector<Pared>& verParedes() const;
 };
 
 
