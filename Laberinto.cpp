@@ -24,8 +24,8 @@ Grilla::Grilla(std::vector< std::vector<Celda> > &celdas) {
 	m_celdas = celdas;
 }
 
-int Grilla::alto() const { return m_alto; }
-int Grilla::ancho() const { return m_ancho; }
+unsigned int Grilla::alto() const { return m_alto; }
+unsigned int Grilla::ancho() const { return m_ancho; }
 
 /* Celda por defecto */
 Celda::Celda() {
@@ -58,7 +58,7 @@ void Laberinto::generarlab(unsigned int xh, unsigned int yh){
 	cel_actual->visitada = true;
 	//std::cout << "Termino inicio" << std::endl;
 	/* Por cada celda en la grilla */
-	for(int i=0;i<(Cuadro.alto()*Cuadro.ancho()-1);i++) {
+	for(unsigned int i=0;i<(Cuadro.alto()*Cuadro.ancho()-1);i++) {
 		/* Si no se puede mover a ninguna celda vecina */
 		//std::cout << "------------------------------------" << std::endl;
 		//std::cout << "La celda actual es: " << stack.top().x << ", " << stack.top().y << std::endl;
@@ -120,7 +120,6 @@ bool Laberinto::puedeMoverse(Coordenadas pos, Coordenadas dir){
 		//std::cout<<"Esta visitada"<<std::endl;
 		return false;
 	}
-		
 
 	return true;
 }
@@ -128,33 +127,12 @@ bool Laberinto::puedeMoverse(Coordenadas pos, Coordenadas dir){
 Grilla Laberinto::VerGrilla(){
 	return Cuadro;
 }
-Laberinto::Laberinto(const LabParams &p) : Cuadro(p.ancho, p.alto), spr_tiles(64), spr_escotillas(1) {
-	srand(p.semilla);
-	generarlab(p.entrada_x,p.entrada_y);
 
-	/* Se cargan las texturas del disco */
-	tileset.loadFromFile("assets/hexagonos-2080x2400-debug.png");
-	escotillas.loadFromFile("assets/escotillas-516x86.png");
-	robertinho.loadFromFile("assets/robertinho3.png");
-
-	/* Se crea un vector de sprites, cada uno con su respectivo tile del tileset */
-	for(int i=0; i < 64; i++) {
-		int fila = i / 8, col = i % 8;
-		spr_tiles[i].setTexture(tileset);
-		spr_tiles[i].setTextureRect(
-			sf::IntRect(ancho*col, alto*fila, ancho, alto+1)
-		);
-	}
-
-	spr_escotillas[0].setTexture(escotillas);
-	spr_escotillas[0].setTextureRect(sf::IntRect(0, 0, 86, 86));
-	spr_escotillas[0].setOrigin(43, 43);
-
-}
-
-Laberinto::Laberinto(unsigned int semilla, unsigned int e_x, unsigned int e_y, unsigned int _alto, unsigned int _ancho) : Cuadro(_ancho, _alto), spr_tiles(64), spr_escotillas(1) {
+Laberinto::Laberinto(unsigned int semilla, unsigned int e_x, unsigned int e_y, unsigned int _alto, unsigned int _ancho
+		, float paredes_rotas) : Cuadro(_ancho, _alto), spr_tiles(64), spr_escotillas(1) {
 	srand(semilla);
 	generarlab(e_x,e_y);
+	romperParedes(paredes_rotas);
 
 	/* Se cargan las texturas del disco */
 	tileset.loadFromFile("assets/hexagonos-2080x2400-debug.png");
@@ -171,8 +149,8 @@ Laberinto::Laberinto(unsigned int semilla, unsigned int e_x, unsigned int e_y, u
 	}
 	
 	/* Se crean las paredes que colisionaran con las entidades */
-	for(int yh=0; yh < Cuadro.alto(); yh++) {
-		for(int xh=0; xh < Cuadro.ancho(); xh++) {
+	for(unsigned int yh=0; yh < Cuadro.alto(); yh++) {
+		for(unsigned int xh=0; xh < Cuadro.ancho(); xh++) {
 			const Celda &c = Cuadro.celda(Coordenadas(xh, yh));
 			
 			if (!c.aberturas[0]) {
@@ -202,9 +180,9 @@ Laberinto::Laberinto(unsigned int semilla, unsigned int e_x, unsigned int e_y, u
 }
 
 bool Laberinto::estaDentro(Coordenadas pos, Coordenadas dir) {
-	int x = pos.x, y = pos.y;
+	unsigned int x = pos.x, y = pos.y;
 	int nuevo_x = x + dir.x, nuevo_y = y + dir.y;
-	bool res = nuevo_x >= 0 && nuevo_y >= 0 && nuevo_x < Cuadro.ancho() && nuevo_y < Cuadro.alto();
+	bool res = nuevo_x >= 0 && nuevo_y >= 0 && nuevo_x < (int) Cuadro.ancho() && nuevo_y < (int) Cuadro.alto();
 
 	if (!res)
 		;
@@ -243,8 +221,8 @@ void Laberinto::imprimirParedes(const Celda& c) {
 }
 
 void Laberinto::DibujarLab(sf::RenderWindow &w, float x, float y) {
-	for(int xh=0; xh < Cuadro.ancho(); xh++) {
-		for (int yh=0; yh < Cuadro.alto(); yh++) {
+	for(unsigned int xh=0; xh < Cuadro.ancho(); xh++) {
+		for (unsigned int yh=0; yh < Cuadro.alto(); yh++) {
 			const Celda &c = Cuadro.celda(Coordenadas(xh, yh));
 
 			if (c.visible == false)
@@ -270,4 +248,66 @@ void Laberinto::DibujarLab(sf::RenderWindow &w, float x, float y) {
 
 const std::vector<Pared>& Laberinto::verParedes() const {
 	return paredes;
+}
+
+void Laberinto::romperParedes(float probabilidad) {
+	if (probabilidad <= 0)
+		return ;
+
+	Grilla &g = Cuadro;
+	for(unsigned int xh=0; xh < g.ancho(); xh++) {
+		for(unsigned int yh=0; yh < g.alto(); yh++) {
+			for(unsigned int dir=0; dir < 6; dir++) {
+				unsigned int dir_op = dirOpuesta(dir);
+				Coordenadas coord_c1(xh, yh);
+
+				bool disponible = true;
+
+				if(!estaDentro(coord_c1, convertirDir(dir))) {
+					continue;
+				} else {
+
+					Celda &c1 = g.celda(coord_c1);
+					Coordenadas coord_c2(xh + convertirDir(dir).x, yh + convertirDir(dir).y);
+					Celda &c2 = g.celda(coord_c2);
+					
+					if(!c1.hueca || !c1.visible || !c2.hueca || !c2.visible) {
+						continue;
+					} else if(disponible) {
+
+						float rnd = (rand() % 1000) / 1000.0;
+
+						if (rnd < probabilidad) {
+							c1.aberturas[dir] = true;
+							c2.aberturas[dir_op] = true;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+unsigned int Laberinto::dirOpuesta(unsigned int dir) {
+	switch(dir) {
+	case 0: return 3;
+	case 1: return 4;
+	case 2: return 5;
+	case 3: return 0;
+	case 4: return 1;
+	case 5: return 2;
+	}
+	return 6;
+}
+
+Coordenadas Laberinto::convertirDir(unsigned int dir) {
+	switch(dir) {
+	case 0: return Coordenadas(1, -1);
+	case 1: return Coordenadas(1, 0);
+	case 2: return Coordenadas(0, 1);
+	case 3: return Coordenadas(-1, 1);
+	case 4: return Coordenadas(-1, 0);
+	case 5: return Coordenadas(0, -1);
+	}
+	return Coordenadas(0, 0);
 }

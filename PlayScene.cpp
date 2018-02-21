@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cstdlib>
 
-PlayScene::PlayScene(float _tiempo_spawn_bolas) : lab(0, 0, 0, 10, 10) {
+PlayScene::PlayScene(float _tiempo_spawn_bolas) : lab(0, 0, 0, 10, 10, 0.02) {
 	bola.loadFromFile("assets/bola2.png");
 	tiempo_spawn_bolas = _tiempo_spawn_bolas;
 

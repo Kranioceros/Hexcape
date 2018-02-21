@@ -7,15 +7,6 @@
 #include <SFML/Graphics.hpp>
 #include "Pared.hpp"
 
-
-struct LabParams {
-	//unsigned int pasos;
-	unsigned int semilla;
-	int entrada_x, entrada_y;
-	//int salida_x, salida_y;
-	unsigned int alto, ancho;
-};
-
 struct Coordenadas{
 	int x;
 	int y;
@@ -42,8 +33,8 @@ private:
 public:
 	Grilla(unsigned int ancho, unsigned int alto);
 	Grilla(std::vector< std::vector<Celda> > &celdas);
-	int ancho() const;
-	int alto() const;	
+	unsigned int ancho() const;
+	unsigned int alto() const;	
 	const Celda &celda(Coordenadas pos) const;
 	Celda &celda(Coordenadas pos);
 };
@@ -67,6 +58,9 @@ private:
 	bool estaDentro(Coordenadas pos, Coordenadas dir);
 	void imprimirParedes(const Celda& c);
 	void generarlab(unsigned int xh, unsigned int yh);
+	void romperParedes(float probabilidad);
+	unsigned int dirOpuesta(unsigned int dir);
+	Coordenadas convertirDir(unsigned int dir);
 	std::vector<Pared> paredes;
 
 	int nroTile(const bool *arr) {
@@ -80,12 +74,11 @@ private:
 	Coordenadas obtenerDir(Coordenadas pos, int &n);
 public:
 	Laberinto();
-	Laberinto(unsigned int semilla, unsigned int e_x, unsigned int e_y, unsigned int alto, unsigned int ancho);
-	Laberinto(const LabParams &p);
+	Laberinto(unsigned int semilla, unsigned int e_x, unsigned int e_y, unsigned int alto, unsigned int ancho
+			, float paredes_rotas);
 	Grilla VerGrilla();
 	void DibujarLab(sf::RenderWindow &w, float x, float y);
 	const std::vector<Pared>& verParedes() const;
 };
-
 
 #endif
