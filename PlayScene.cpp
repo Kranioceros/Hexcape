@@ -13,6 +13,17 @@ PlayScene::PlayScene(float _tiempo_spawn_bolas) : lab(0, 0, 0, 10, 10), player(2
 	view.zoom(2);
 
 	bolas_clock.restart();
+
+//	const float lado = 150, altura_lado = 130, alto = 2*lado;
+//	const float ancho = 2*altura_lado;
+//
+//	int xr = 0*ancho + 0*altura_lado;
+//	int yr = 0*(3.0/2)*lado;
+//
+	/* Se agrega solo una bola */
+//	bolas.push_back(Bola(xr + altura_lado, yr + lado,
+//			(rand() % 361) * (3.14159 / 180.0),
+//			2, bola, &lab.verParedes()));
 }
 
 

@@ -20,7 +20,7 @@ Pared::Pared(unsigned int _xh, unsigned int _yh, unsigned int _tipo_pared, const
 		spr_pared.setPosition(  48 + xr + cosf(PI/6.0)*lado*0.5
 						, 135 + yr - (lado - sinf(PI/6.0)*lado*0.5));
 		spr_pared.setRotation(-60);
-		angulo = 120 * PI/180.0;
+		angulo = 240 * PI/180.0;
 		break;
 	case 1:
 		spr_pared.setOrigin(0, 0);
@@ -32,14 +32,14 @@ Pared::Pared(unsigned int _xh, unsigned int _yh, unsigned int _tipo_pared, const
 		spr_pared.setOrigin(0, 0);
 		spr_pared.setPosition(130 + xr + altura_lado, 190 + yr - (0.5*lado-0.5*lado));
 		spr_pared.setRotation(60);
-		angulo = 240 * PI/180.0;
+		angulo = 120 * PI/180.0;
 		break;
 	case 3:
 		spr_pared.setOrigin(0, lado);
 		spr_pared.setPosition(60 + xr + cosf(PI/6.0)*lado*0.5
 						, 187 + yr + (lado - sinf(PI/6.0)*lado*0.5));
 		spr_pared.setRotation(-60);
-		angulo = 300 * PI/180.0;
+		angulo = 60 * PI/180.0;
 		break;
 	case 4:
 		spr_pared.setOrigin(30, lado);
@@ -53,7 +53,7 @@ Pared::Pared(unsigned int _xh, unsigned int _yh, unsigned int _tipo_pared, const
 		spr_pared.setPosition(220 + xr - cosf(PI/6.0)*lado*0.5
 						, 130 + yr - (lado - sinf(PI/6.0)*lado*0.5));
 		spr_pared.setRotation(60);
-		angulo = 60 * PI/180.0;
+		angulo = 300 * PI/180.0;
 		break;
 	}
 }
