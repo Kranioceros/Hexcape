@@ -28,6 +28,9 @@ public:
 	
 	/// eliminar un actor de la escena
 	void remove(Entity *e);
+
+	/// destructor virtual, por si se necesita hacer algo especial
+	virtual ~BaseScene() {}
 	
 private:
 	vector<Entity *> entities;

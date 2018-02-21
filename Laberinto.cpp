@@ -257,15 +257,15 @@ void Laberinto::DibujarLab(sf::RenderWindow &w, float x, float y) {
 			spr_escotillas[0].setPosition(xr + altura_lado, yr + lado);
 			spr_tiles[nro_tile].setPosition(xr, yr);
 
-//			w.draw(spr_tiles[nro_tile]);
-//			w.draw(spr_escotillas[0]);
+			w.draw(spr_tiles[nro_tile]);
+			w.draw(spr_escotillas[0]);
 		}
 	}
 	
 	/* Paredes verdes -- debug.lala */
-	for(auto &pared : paredes) {
-		w.draw(pared.verSprite());
-	}
+//	for(auto &pared : paredes) {
+//		w.draw(pared.verSprite());
+//	}
 }
 
 const std::vector<Pared>& Laberinto::verParedes() const {

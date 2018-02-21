@@ -16,6 +16,7 @@ void Bola::update(float elapsed) {
 
 	nuevo_x = x + velocidad.x;
 	nuevo_y = y + velocidad.y;
+	sf::Vector2f nueva_vel = velocidad;
 
 	/* Si hubo una colision, calcular el nuevo angulo y posicion */
 	auto pared_chocada = paredes->begin();
@@ -41,15 +42,36 @@ void Bola::update(float elapsed) {
 
 		sf::Vector2f w(velocidad.x - u.x, velocidad.y - u.y);
 
-		sf::Vector2f nueva_vel(w.x - u.x, w.y - u.y);
+		nueva_vel.x = w.x - u.x;
+		nueva_vel.y = w.y - u.y;
 
-		/* Se ajusta X e Y de acuerdo a la nueva velocidad */
-		velocidad = nueva_vel;
-		nuevo_x = x + velocidad.x;
-		nuevo_y = y + velocidad.y;
+		/* Se calculan las nuevas coordenadas y se mueve al sprite */
+		nuevo_x = x + nueva_vel.x;
+		nuevo_y = y + nueva_vel.y;
+		spr.setPosition(nuevo_x, nuevo_y);
+
+		/* Si la nueva velocidad lleva a la bola a una posicion invalida, se
+		 * la descarta y se toma la direccion contraria */
+		pared_chocada = paredes->begin();
+
+		while(pared_chocada != paredes->end() && Collision::BoundingBoxTest(spr, pared_chocada->verSprite()) == false) {
+			pared_chocada++;
+		}
+
+		/* La nueva posicion es invalida */
+		if (pared_chocada != paredes->end()) {
+			nueva_vel.x = -velocidad.x;
+			nueva_vel.y = -velocidad.y;
+
+			nuevo_x = x + nueva_vel.x;
+			nuevo_y = y + nueva_vel.y;
+		}
+		/* La nueva posicion es valida y no se cambia la nueva velocidad */
 	}
 
+	velocidad = nueva_vel;
 	x = nuevo_x; y = nuevo_y;
+
 	spr.setPosition(x, y);
 }
 

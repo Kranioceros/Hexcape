@@ -10,41 +10,28 @@ PlayScene::PlayScene(float _tiempo_spawn_bolas) : lab(0, 0, 0, 10, 10), player(2
 
 	view.reset(sf::FloatRect(0, 0, 1920, 1080));	
 	view.setCenter(player.verPosicion().x, player.verPosicion().y);
-	view.zoom(2);
+	view.zoom(0.75);
 
 	bolas_clock.restart();
-
-//	const float lado = 150, altura_lado = 130, alto = 2*lado;
-//	const float ancho = 2*altura_lado;
-//
-//	int xr = 0*ancho + 0*altura_lado;
-//	int yr = 0*(3.0/2)*lado;
-//
-	/* Se agrega solo una bola */
-//	bolas.push_back(Bola(xr + altura_lado, yr + lado,
-//			(rand() % 361) * (3.14159 / 180.0),
-//			2, bola, &lab.verParedes()));
 }
-
 
 void PlayScene::update(float elapsed){
 	player.update(elapsed);
-	sf::Vector2f player_pos = player.verPosicion();
 	view.move(player.verOffset());
 
 	sf::Time bolas_time = bolas_clock.getElapsedTime();
 
 	/* Se agregan nuevas bolas dependiendo del timer */
 	if(bolas_time.asSeconds() > tiempo_spawn_bolas) {
-		const float lado = 150, altura_lado = 130, alto = 2*lado;
+		bolas_clock.restart();	
+		/* Se calculan posiciones al azar dentro de las celdas */
+		const float lado = 150, altura_lado = 130;
 		const float ancho = 2*altura_lado;
 
 		int xh = rand() % lab.VerGrilla().ancho(), yh = rand() % lab.VerGrilla().alto();
 
 		int xr = xh*ancho + yh*altura_lado;
 		int yr = yh*(3.0/2)*lado;
-
-		bolas_clock.restart();	
 
 		bolas.push_back(Bola(xr + altura_lado, yr + lado,
 				(rand() % 361) * (3.14159 / 180.0),
@@ -54,7 +41,6 @@ void PlayScene::update(float elapsed){
 	/* Se actualizan las bolas */
 	for (auto &bola : bolas)
 		bola.update(elapsed);
-
 }
 
 void PlayScene::draw(sf::RenderWindow &w){
