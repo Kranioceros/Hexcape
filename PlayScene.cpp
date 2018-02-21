@@ -4,23 +4,22 @@
 #include <iostream>
 #include <cstdlib>
 
-PlayScene::PlayScene(float _tiempo_spawn_bolas) : lab(0, 0, 0, 10, 10), player(200, 200, &lab.verParedes()) {
+PlayScene::PlayScene(float _tiempo_spawn_bolas) : lab(0, 0, 0, 10, 10) {
 	bola.loadFromFile("assets/bola2.png");
 	tiempo_spawn_bolas = _tiempo_spawn_bolas;
 
+	player = new Player(200, 200, &lab.verParedes());
+	add(player);	
+
 	view.reset(sf::FloatRect(0, 0, 1920, 1080));	
-	view.setCenter(player.verPosicion().x, player.verPosicion().y);
+	view.setCenter(player->verPosicion().x, player->verPosicion().y);
 	view.zoom(0.75);
 
 	bolas_clock.restart();
 }
 
 void PlayScene::update(float elapsed){
-	player.update(elapsed);
-	view.move(player.verOffset());
-
 	sf::Time bolas_time = bolas_clock.getElapsedTime();
-
 	/* Se agregan nuevas bolas dependiendo del timer */
 	if(bolas_time.asSeconds() > tiempo_spawn_bolas) {
 		bolas_clock.restart();	
@@ -33,21 +32,19 @@ void PlayScene::update(float elapsed){
 		int xr = xh*ancho + yh*altura_lado;
 		int yr = yh*(3.0/2)*lado;
 
-		bolas.push_back(Bola(xr + altura_lado, yr + lado,
+		add(new Bola(xr + altura_lado, yr + lado,
 				(rand() % 361) * (3.14159 / 180.0),
-			       	2, bola, &lab.verParedes()));
+				2, bola, &lab.verParedes()));
 	}
-
-	/* Se actualizan las bolas */
-	for (auto &bola : bolas)
-		bola.update(elapsed);
+	/* Se actualizan todas las entidades */
+	BaseScene::update(elapsed);
+	view.move(player->verOffset());
 }
 
 void PlayScene::draw(sf::RenderWindow &w){
 	w.setView(view);
 	lab.DibujarLab(w, 0, 0);
-	player.draw(w);
-	for (auto &bola : bolas) {
-		bola.draw(w);
-	}
+
+	/* Se dibujan las entidades */
+	BaseScene::draw(w);
 }

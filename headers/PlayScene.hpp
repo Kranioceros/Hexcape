@@ -9,18 +9,18 @@
 
 class PlayScene: public BaseScene {
 private:
-	Laberinto lab;
-	Player player;
 	sf::View view;
 	sf::Texture bola;
 
-	vector<Bola> bolas;
+	Laberinto lab;
+	Player* player;
+
 	sf::Clock bolas_clock;
 	float tiempo_spawn_bolas;
 public:
 	PlayScene(float _tiempo_spawn_bolas);
-	void update(float elapsed);
-	void draw(sf::RenderWindow &w);
+	void update(float elapsed) override;
+	void draw(sf::RenderWindow &w) override;
 };
 
 #endif
