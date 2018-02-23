@@ -14,7 +14,11 @@ private:
 	sf::Sprite hitbox_spr;
 	const std::vector<Pared> *paredes;
 	sf::Vector2f offset;
-	
+
+	unsigned int dir, anim;
+	bool seMueve;	
+	sf::Clock clock_cambiar_anim;
+	float velocidad;
 public:
 	Player(unsigned int x, unsigned int y, const std::vector<Pared> *p);
 	void update(float elapsed) override;

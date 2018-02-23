@@ -4,9 +4,8 @@
 #include <iostream>
 
 Player::Player(unsigned int x, unsigned int y, const std::vector<Pared> *p) {
-	tex.loadFromFile("assets/akira.png");
+	tex.loadFromFile("assets/player_spritesheet.png");
 	spr.setTexture(tex);
-	spr.setOrigin(15, 15);
 	spr.setPosition(x, y);
 
 	hitbox_tex.loadFromFile("assets/akira_hitbox.png");
@@ -17,6 +16,15 @@ Player::Player(unsigned int x, unsigned int y, const std::vector<Pared> *p) {
 	offset.x = 0; offset.y = 0;
 
 	paredes = p;
+
+	dir = 4;
+	anim = 0;
+	seMueve = false;
+	spr.setTextureRect(sf::IntRect(30*dir, 0, 30, 30));
+	spr.setOrigin(15, 15);
+
+	clock_cambiar_anim.restart();
+	velocidad = 100;
 }
 
 void Player::update(float elapsed){
@@ -29,50 +37,64 @@ void Player::update(float elapsed){
 	float mov_cat = sqrt(mov*mov/2);
 	
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+		seMueve = true;
 		// NO
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+			dir = 7;
 			spr.move(-mov_cat, -mov_cat);
 			hitbox_spr.move(-mov_cat, -mov_cat);
 			offset.x -= mov_cat; offset.y -= mov_cat;
 			
 			// SO
 		} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+			dir = 5;
 			spr.move(-mov_cat, mov_cat);
 			hitbox_spr.move(-mov_cat, mov_cat);
 			offset.x -= mov_cat; offset.y += mov_cat;
 		} else {
 			// O
+			dir = 6;
 			hitbox_spr.move(-mov, 0);
 			spr.move(-mov, 0);
 			offset.x -= mov;
 		}
 	} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-		// NE
+		seMueve = true;
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+			dir = 1;
 			spr.move(mov_cat, -mov_cat);
 			hitbox_spr.move(mov_cat, -mov_cat);
 			offset.x += mov_cat; offset.y -= mov_cat;
 		// SE
 		} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+			dir = 3;
 			spr.move(mov_cat, mov_cat);
 			hitbox_spr.move(mov_cat, mov_cat);
 			offset.x += mov_cat; offset.y += mov_cat;
 		// E
 		} else {
+			dir = 2;
 			hitbox_spr.move(mov, 0);
 			spr.move(mov, 0);
 			offset.x += mov;
 		}
 	} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
 		// N
+		dir = 0;
+		seMueve = true;
 		spr.move(0, -mov);
 		hitbox_spr.move(0, -mov);
 		offset.y -= mov;
 	} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
 		// S
+		seMueve = true;
+		dir = 4;
 		spr.move(0, mov);
 		hitbox_spr.move(0, mov);
 		offset.y += mov;
+	} else {
+		// No se mueve
+		seMueve = false;
 	}
 
 	/* Codigo para detectar colisiones */
@@ -93,6 +115,21 @@ void Player::update(float elapsed){
 		spr.setPosition(coord);
 		hitbox_spr.setPosition(coord.x+5, coord.y+5);
 		offset = offset_viejo;
+	}
+
+	/* Se cambia el fotograma si el tiempo ocurrido es mayor a velocidad */
+	sf::Time tiempo_ocurrido = clock_cambiar_anim.getElapsedTime();
+	if (tiempo_ocurrido.asMilliseconds() > velocidad) {
+		anim = (anim + 1) % 3;
+		clock_cambiar_anim.restart();
+	}
+
+	/* Se actualiza el sprite en base a la rotacion del personaje y su
+	 * movimiento */
+	if (seMueve) {
+		spr.setTextureRect(sf::IntRect(30*dir, 30*anim, 30, 30));
+	} else {
+		spr.setTextureRect(sf::IntRect(30*dir, 30, 30, 30));
 	}
 }
 void Player::draw(sf::RenderWindow &w){

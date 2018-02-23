@@ -15,8 +15,10 @@ private:
 	Laberinto lab;
 	Player* player;
 
+	vector<Bola*> bolas;
 	sf::Clock bolas_clock;
 	float tiempo_spawn_bolas;
+	unsigned int max_bolas;
 public:
 	PlayScene(float _tiempo_spawn_bolas);
 	void update(float elapsed) override;
