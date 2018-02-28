@@ -1,6 +1,7 @@
 #include "headers/Player.hpp"
 #include "headers/Collision.h"
 #include "headers/GameOverScene.hpp"
+#include "headers/PlayScene.hpp"
 #include "headers/Game.hpp"
 #include <cmath>
 #include <iostream>
@@ -33,6 +34,7 @@ Player::Player(unsigned int x, unsigned int y, const std::vector<Pared> *p, cons
 	clock_cambiar_anim.restart();
 	velocidad = 100;
 	tiempo_muerto = 3000;
+	tiempo_victoria = 3000;
 }
 
 void Player::update(float elapsed){
@@ -52,8 +54,9 @@ void Player::update(float elapsed){
 		case GANO:
 		{
 		sf::Time tiempo = clock_cambiar_anim.getElapsedTime();
-		if(tiempo.asMilliseconds() > tiempo_muerto)
-			Game::getInstance().switchScene(new GameOverScene());
+		if(tiempo.asMilliseconds() > tiempo_victoria)
+			Game::getInstance().switchScene(
+			new PlayScene(0.2));
 		}
 		break;
 	}

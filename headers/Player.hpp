@@ -24,7 +24,7 @@ private:
 	bool seMueve;	
 	enum {MUERTO, JUGANDO, GANO} estado;
 	sf::Clock clock_cambiar_anim;
-	float velocidad, tiempo_muerto;
+	float velocidad, tiempo_muerto, tiempo_victoria;
 public:
 	Player(unsigned int x, unsigned int y, const std::vector<Pared> *p, const std::vector<Bola*> *_bolas,
 		const sf::Sprite& _portal);
