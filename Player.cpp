@@ -1,7 +1,5 @@
 #include "headers/Player.hpp"
 #include "headers/Collision.h"
-#include "headers/GameOverScene.hpp"
-#include "headers/PlayScene.hpp"
 #include "headers/Game.hpp"
 #include <cmath>
 #include <iostream>
