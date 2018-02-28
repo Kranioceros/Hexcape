@@ -33,32 +33,11 @@ Player::Player(unsigned int x, unsigned int y, const std::vector<Pared> *p, cons
 
 	clock_cambiar_anim.restart();
 	velocidad = 100;
-	tiempo_muerto = 3000;
-	tiempo_victoria = 3000;
 }
 
 void Player::update(float elapsed){
-	switch(estado) {
-		case JUGANDO:
+	if (estado == JUGANDO) {
 		moverse();
-		break;
-
-		case MUERTO:
-		{
-		sf::Time tiempo = clock_cambiar_anim.getElapsedTime();
-		if(tiempo.asMilliseconds() > tiempo_muerto)
-			Game::getInstance().switchScene(new GameOverScene());
-		}
-		break;
-
-		case GANO:
-		{
-		sf::Time tiempo = clock_cambiar_anim.getElapsedTime();
-		if(tiempo.asMilliseconds() > tiempo_victoria)
-			Game::getInstance().switchScene(
-			new PlayScene(0.2));
-		}
-		break;
 	}
 }
 void Player::draw(sf::RenderWindow &w){
@@ -191,7 +170,6 @@ void Player::moverse() {
 	/* Si el jugador choco con una bola, MUERE */
 	if (chocoBola()) {
 		estado = MUERTO;
-		clock_cambiar_anim.restart();
 		offset.x = offset.y = 0;
 		spr.setTexture(tex_muerto, true);
 	}
@@ -221,7 +199,6 @@ void Player::moverse() {
 
 	if ( closest_dist.x*closest_dist.x + closest_dist.y + closest_dist.y < 10*10 ) {
 		estado = GANO;
-		clock_cambiar_anim.restart();
 		offset.x = offset.y = 0;
 	}
 }

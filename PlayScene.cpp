@@ -1,5 +1,7 @@
 #include "headers/PlayScene.hpp"
 #include "headers/Laberinto.h"
+#include "headers/Game.hpp"
+#include "headers/GameOverScene.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include <iostream>
 #include <cstdlib>
@@ -10,6 +12,8 @@ PlayScene::PlayScene(float _tiempo_spawn_bolas) : lab(time(nullptr), 0, 0, 5, 5,
 	portal.loadFromFile("assets/portal.png");
 	tiempo_spawn_bolas = _tiempo_spawn_bolas;
 
+	tiempo_muerto = 3000;
+	tiempo_victoria = 3000;
 	player = new Player(200, 200, &lab.verParedes(), &bolas, spr_portal);
 	add(player);	
 
@@ -47,6 +51,7 @@ PlayScene::PlayScene(float _tiempo_spawn_bolas) : lab(time(nullptr), 0, 0, 5, 5,
 
 void PlayScene::update(float elapsed){
 	sf::Time bolas_time = bolas_clock.getElapsedTime();
+
 	/* Se agregan nuevas bolas dependiendo del timer */
 	if(bolas_time.asSeconds() > tiempo_spawn_bolas) {
 		bolas_clock.restart();
@@ -70,6 +75,30 @@ void PlayScene::update(float elapsed){
 
 	BaseScene::update(elapsed);
 	view.move(player->verOffset());
+
+	/* Si el jugador perdio/gano, se cambia de escena */
+	switch(player->verEstado()) {
+		case 1: // Jugando
+		tiempo_player.restart();
+		break;
+
+		case 0: // Muerto
+		{
+		sf::Time tiempo = tiempo_player.getElapsedTime();
+		if(tiempo.asMilliseconds() > tiempo_muerto)
+			Game::getInstance().switchScene(new GameOverScene());
+		}
+		break;
+
+		case 2: // Gano
+		{
+		sf::Time tiempo = tiempo_player.getElapsedTime();
+		if(tiempo.asMilliseconds() > tiempo_victoria)
+			Game::getInstance().switchScene(new PlayScene(0.2));
+		}
+		break;
+
+	}
 }
 
 void PlayScene::draw(sf::RenderWindow &w){

@@ -9,6 +9,9 @@
 
 class Player : public Entity {
 private:
+
+	enum Estado_Player {MUERTO, JUGANDO, GANO} estado;
+
 	sf::Texture tex;
 	sf::Texture tex_muerto;
 	sf::Texture hitbox_tex;
@@ -22,7 +25,6 @@ private:
 
 	unsigned int dir, anim;
 	bool seMueve;	
-	enum {MUERTO, JUGANDO, GANO} estado;
 	sf::Clock clock_cambiar_anim;
 	float velocidad, tiempo_muerto, tiempo_victoria;
 public:
@@ -35,6 +37,7 @@ public:
 	const sf::Vector2f verPosicion() const;
 	const sf::Vector2f verOffset() const;
 	void moverse();
+	Estado_Player verEstado(){ return estado; }
 };
 
 #endif

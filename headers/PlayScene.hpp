@@ -19,10 +19,12 @@ private:
 
 	Laberinto lab;
 	Player* player;
+	float tiempo_muerto, tiempo_victoria;
 
 	vector<Bola*> bolas;
 	vector<Escotilla*> escotillas;
 	sf::Clock bolas_clock;
+	sf::Clock tiempo_player;
 	float tiempo_spawn_bolas;
 	unsigned int max_bolas;
 public:
