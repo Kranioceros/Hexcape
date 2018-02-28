@@ -1,12 +1,17 @@
 #include "headers/Player.hpp"
 #include "headers/Collision.h"
+#include "headers/GameOverScene.hpp"
+#include "headers/Game.hpp"
 #include <cmath>
 #include <iostream>
 
-Player::Player(unsigned int x, unsigned int y, const std::vector<Pared> *p) {
-	tex.loadFromFile("assets/player_spritesheet.png");
-	spr.setTexture(tex);
+Player::Player(unsigned int x, unsigned int y, const std::vector<Pared> *p, const std::vector<Bola*> *_bolas,
+		const sf::Sprite &_spr_portal) : spr_portal(_spr_portal) {
+
+	tex.loadFromFile("assets/player_spritesheet.png"); spr.setTexture(tex);
 	spr.setPosition(x, y);
+
+	tex_muerto.loadFromFile("assets/player_muerto.png");
 
 	hitbox_tex.loadFromFile("assets/akira_hitbox.png");
 	hitbox_spr.setTexture(hitbox_tex);
@@ -16,18 +21,68 @@ Player::Player(unsigned int x, unsigned int y, const std::vector<Pared> *p) {
 	offset.x = 0; offset.y = 0;
 
 	paredes = p;
+	bolas = _bolas;
 
 	dir = 4;
 	anim = 0;
 	seMueve = false;
+	estado = JUGANDO;
 	spr.setTextureRect(sf::IntRect(30*dir, 0, 30, 30));
 	spr.setOrigin(15, 15);
 
 	clock_cambiar_anim.restart();
 	velocidad = 100;
+	tiempo_muerto = 3000;
 }
 
 void Player::update(float elapsed){
+	switch(estado) {
+		case JUGANDO:
+		moverse();
+		break;
+
+		case MUERTO:
+		{
+		sf::Time tiempo = clock_cambiar_anim.getElapsedTime();
+		if(tiempo.asMilliseconds() > tiempo_muerto)
+			Game::getInstance().switchScene(new GameOverScene());
+		}
+		break;
+
+		case GANO:
+		{
+		sf::Time tiempo = clock_cambiar_anim.getElapsedTime();
+		if(tiempo.asMilliseconds() > tiempo_muerto)
+			Game::getInstance().switchScene(new GameOverScene());
+		}
+		break;
+	}
+}
+void Player::draw(sf::RenderWindow &w){
+	w.draw(spr);
+}
+
+const sf::Vector2f Player::verPosicion() const {
+	return spr.getPosition();
+}
+
+const sf::Vector2f Player::verOffset() const {
+	return offset;
+}
+
+bool Player::chocoBola() {
+	auto bola = bolas->begin();
+	while(bola != bolas->end() && Collision::BoundingBoxTest(hitbox_spr, (*bola)->getSprite()) == false) {
+		bola++;	
+	}
+
+	if(bola != bolas->end())
+		return true;
+	else
+		return false;
+}
+
+void Player::moverse() {
 	offset.x = offset.y = 0;
 
 	sf::Vector2f coord = spr.getPosition();
@@ -47,9 +102,7 @@ void Player::update(float elapsed){
 			
 			// SO
 		} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-			dir = 5;
-			spr.move(-mov_cat, mov_cat);
-			hitbox_spr.move(-mov_cat, mov_cat);
+			dir = 5; spr.move(-mov_cat, mov_cat); hitbox_spr.move(-mov_cat, mov_cat);
 			offset.x -= mov_cat; offset.y += mov_cat;
 		} else {
 			// O
@@ -131,15 +184,19 @@ void Player::update(float elapsed){
 	} else {
 		spr.setTextureRect(sf::IntRect(30*dir, 30, 30, 30));
 	}
-}
-void Player::draw(sf::RenderWindow &w){
-	w.draw(spr);
-}
 
-const sf::Vector2f Player::verPosicion() const {
-	return spr.getPosition();
-}
+	/* Si el jugador choco con una bola, MUERE */
+	if (chocoBola()) {
+		estado = MUERTO;
+		clock_cambiar_anim.restart();
+		offset.x = offset.y = 0;
+		spr.setTexture(tex_muerto, true);
+	}
 
-const sf::Vector2f Player::verOffset() const {
-	return offset;
+	/* Si el jugador choco con el portal, GANA */
+	if (Collision::BoundingBoxTest(hitbox_spr, spr_portal)) {
+		estado = GANO;
+		clock_cambiar_anim.restart();
+		offset.x = offset.y = 0;
+	}
 }

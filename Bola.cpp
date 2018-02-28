@@ -3,15 +3,34 @@
 #include <iostream>
 #include "headers/Collision.h"
 
-Bola::Bola(float _x, float _y, float angulo, float _rapidez,  const sf::Texture &_tex, const std::vector<Pared> *_paredes) : tex(_tex) {
+Bola::Bola(float _x, float _y, float angulo, float _rapidez, float _tiempo_spawn, const sf::Texture &_tex, const std::vector<Pared> *_paredes) : tex(_tex) {
 	x = _x; y = _y; rapidez = _rapidez;
+	tiempo_spawn = _tiempo_spawn;
+	estado = SPAWNING;
 	velocidad.x = sin(angulo) * rapidez;
 	velocidad.y = cos(angulo) * rapidez;
 	paredes = _paredes;
 	spr.setTexture(tex);
+	clock_spawn.restart();
 }
 
 void Bola::update(float elapsed) {
+	if (estado != SPAWNING)
+		moverse();
+	else {
+		sf::Time tiempo = clock_spawn.getElapsedTime();
+		if (tiempo.asMilliseconds() > tiempo_spawn) {
+			estado = NORMAL;
+		}
+	}
+}
+
+void Bola::draw(sf::RenderWindow &w) {
+	if (estado != SPAWNING)
+		w.draw(spr);
+}
+
+void Bola::moverse() {
 	float nuevo_x = x, nuevo_y = y;
 
 	nuevo_x = x + velocidad.x;
@@ -73,8 +92,9 @@ void Bola::update(float elapsed) {
 	x = nuevo_x; y = nuevo_y;
 
 	spr.setPosition(x, y);
+
 }
 
-void Bola::draw(sf::RenderWindow &w) {
-	w.draw(spr);
+const sf::Sprite& Bola::getSprite() const {
+	return spr;
 }

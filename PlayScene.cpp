@@ -4,11 +4,13 @@
 #include <iostream>
 #include <cstdlib>
 
-PlayScene::PlayScene(float _tiempo_spawn_bolas) : lab(time(nullptr), 0, 0, 10, 10, 0.02) {
+PlayScene::PlayScene(float _tiempo_spawn_bolas) : lab(time(nullptr), 0, 0, 5, 5, 0.02) {
 	bola.loadFromFile("assets/bola2.png");
+	escotilla.loadFromFile("assets/escotillas-516x86.png");
+	portal.loadFromFile("assets/portal.png");
 	tiempo_spawn_bolas = _tiempo_spawn_bolas;
 
-	player = new Player(200, 200, &lab.verParedes());
+	player = new Player(200, 200, &lab.verParedes(), &bolas, spr_portal);
 	add(player);	
 
 	view.reset(sf::FloatRect(0, 0, 1920, 1080));	
@@ -16,31 +18,44 @@ PlayScene::PlayScene(float _tiempo_spawn_bolas) : lab(time(nullptr), 0, 0, 10, 1
 	view.zoom(0.5);
 
 	bolas_clock.restart();
-	max_bolas = 30;
+	max_bolas = 70;
+
+	const float lado = 150, altura_lado = 130;
+	const float ancho = 2*altura_lado;
+
+	/* Se agregan las escotillas */
+	for(unsigned int fila=0; fila < lab.VerGrilla().alto(); fila++) {
+		for(unsigned int col=0; col < lab.VerGrilla().ancho(); col++) {
+
+			int xr = col*ancho + fila*altura_lado;
+			int yr = fila*(3.0/2)*lado;
+
+			/* Que no ponga la ultima escotilla (ahi va el portal) */
+			if(escotillas.size() < lab.VerGrilla().ancho() * lab.VerGrilla().alto() - 1) {
+				Escotilla* ptr_escotilla =
+				new Escotilla(xr+altura_lado, yr+lado, 2, &lab.verParedes(), escotilla, bola);
+				escotillas.push_back(ptr_escotilla);
+			}
+		}
+	}
+
+	/* Se agrega el portal al final de la escena */
+	spr_portal.setTexture(portal);
+	spr_portal.setOrigin(45, 45);
+	spr_portal.setPosition((lab.VerGrilla().ancho()-1)*ancho + (lab.VerGrilla().alto()-1)*altura_lado + altura_lado					,(lab.VerGrilla().alto()-1)*(3.0/2)*lado+lado);
 }
 
 void PlayScene::update(float elapsed){
 	sf::Time bolas_time = bolas_clock.getElapsedTime();
 	/* Se agregan nuevas bolas dependiendo del timer */
 	if(bolas_time.asSeconds() > tiempo_spawn_bolas) {
-		bolas_clock.restart();	
-
-		/* Se calculan posiciones al azar dentro de las celdas */
-		const float lado = 150, altura_lado = 130;
-		const float ancho = 2*altura_lado;
-
-		int xh = rand() % lab.VerGrilla().ancho(), yh = rand() % lab.VerGrilla().alto();
-
-		int xr = xh*ancho + yh*altura_lado;
-		int yr = yh*(3.0/2)*lado;
-	
-		Bola* nueva_bola = new Bola(xr + altura_lado, yr + lado,
-				(rand() % 361) * (3.14159 / 180.0),
-				2, bola, &lab.verParedes());
-
-		add(nueva_bola);
-		bolas.push_back(nueva_bola);
-
+		bolas_clock.restart();
+		Bola* nueva_bola = escotillas[rand() % escotillas.size()]->spawn();
+		if (nueva_bola != nullptr) {
+			add(nueva_bola);
+			bolas.push_back(nueva_bola);
+		}
+		
 		/* Si son muchas, se empiezan a borrar las mas viejas */
 		if (bolas.size() >= max_bolas) {
 			bolas.erase(bolas.begin());
@@ -48,6 +63,11 @@ void PlayScene::update(float elapsed){
 		}
 	}
 	/* Se actualizan todas las entidades */
+	for(auto &e : escotillas)
+		e->update(elapsed);
+
+	spr_portal.rotate(2);
+
 	BaseScene::update(elapsed);
 	view.move(player->verOffset());
 }
@@ -55,6 +75,9 @@ void PlayScene::update(float elapsed){
 void PlayScene::draw(sf::RenderWindow &w){
 	w.setView(view);
 	lab.DibujarLab(w, 0, 0);
+	for(auto &e : escotillas)
+		e->draw(w);
+	w.draw(spr_portal);
 
 	/* Se dibujan las entidades */
 	BaseScene::draw(w);

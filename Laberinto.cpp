@@ -236,7 +236,7 @@ void Laberinto::DibujarLab(sf::RenderWindow &w, float x, float y) {
 			spr_tiles[nro_tile].setPosition(xr, yr);
 
 			w.draw(spr_tiles[nro_tile]);
-			w.draw(spr_escotillas[0]);
+//			w.draw(spr_escotillas[0]);
 		}
 	}
 	
