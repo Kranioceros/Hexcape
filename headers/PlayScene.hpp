@@ -27,6 +27,7 @@ private:
 	unsigned int max_bolas;
 public:
 	PlayScene(float _tiempo_spawn_bolas);
+	~PlayScene();
 	void update(float elapsed) override;
 	void draw(sf::RenderWindow &w) override;
 };

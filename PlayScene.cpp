@@ -18,7 +18,7 @@ PlayScene::PlayScene(float _tiempo_spawn_bolas) : lab(time(nullptr), 0, 0, 5, 5,
 	view.zoom(0.5);
 
 	bolas_clock.restart();
-	max_bolas = 70;
+	max_bolas = 30;
 
 	const float lado = 150, altura_lado = 130;
 	const float ancho = 2*altura_lado;
@@ -81,4 +81,12 @@ void PlayScene::draw(sf::RenderWindow &w){
 
 	/* Se dibujan las entidades */
 	BaseScene::draw(w);
+}
+
+PlayScene::~PlayScene() {
+	for (auto &e : escotillas)
+		delete e;
+	for (auto &b : bolas)
+		delete b;
+	remove(player);
 }

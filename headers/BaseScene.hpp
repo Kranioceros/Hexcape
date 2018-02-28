@@ -31,7 +31,6 @@ public:
 
 	/// destructor virtual, por si se necesita hacer algo especial
 	virtual ~BaseScene() {}
-	
 private:
 	vector<Entity *> entities;
 	vector<Entity *> to_delete;
