@@ -196,8 +196,30 @@ void Player::moverse() {
 		spr.setTexture(tex_muerto, true);
 	}
 
-	/* Si el jugador choco con el portal, GANA */
-	if (Collision::BoundingBoxTest(hitbox_spr, spr_portal)) {
+	/* Si el jugador choco con el portal, GANA (se usa deteccion de colisiones
+	 * entre circulo y cuadrado */
+	sf::Vector2f pos_portal = spr_portal.getPosition();
+	sf::Vector2f pos_player = spr.getPosition();
+	sf::Vector2i closest_point(pos_player.x - 15, pos_player.y - 15);
+	sf::Vector2i closest_dist(abs(pos_player.x - pos_portal.x), abs(pos_player.y - pos_portal.y));
+
+	for(int x=closest_point.x; x < pos_player.x + 15; x++) {
+		int dist_x = abs(x - pos_portal.x); 
+		if( dist_x < closest_dist.x) {
+			closest_point.x = x;
+			closest_dist.x = dist_x;
+		}
+	}
+
+	for(int y=closest_point.y; y < pos_player.y + 15; y++) {
+		int dist_y = abs(y - pos_portal.y); 
+		if( dist_y < closest_dist.y) {
+			closest_point.y = y;
+			closest_dist.y = dist_y;
+		}
+	}
+
+	if ( closest_dist.x*closest_dist.x + closest_dist.y + closest_dist.y < 10*10 ) {
 		estado = GANO;
 		clock_cambiar_anim.restart();
 		offset.x = offset.y = 0;
