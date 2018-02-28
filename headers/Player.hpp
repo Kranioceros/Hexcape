@@ -28,6 +28,7 @@ private:
 public:
 	Player(unsigned int x, unsigned int y, const std::vector<Pared> *p, const std::vector<Bola*> *_bolas,
 		const sf::Sprite& _portal);
+	~Player();
 	void update(float elapsed) override;
 	void draw(sf::RenderWindow &w) override;
 	bool chocoBola();

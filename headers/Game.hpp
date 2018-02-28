@@ -16,6 +16,9 @@ public:
 	
 	/// cambiar la escena actual por otra 
 	void switchScene(BaseScene *scene);
+
+	/// cierra la escena actual y termina el juego
+	void cerrarJuego();
 	
 	/// obtener la instancia de juego (singleton)
 	static Game &getInstance();

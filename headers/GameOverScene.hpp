@@ -7,7 +7,8 @@
 class GameOverScene: public BaseScene {
 private:
 	sf::Text game_over_text;
-	sf::Font game_over_font;
+	sf::Text instrucciones_text;
+	sf::Font font;
 	sf::View view;
 
 public:

@@ -7,6 +7,7 @@ class Entity {
 public:
 virtual void update(float elapsed) = 0;
 virtual void draw(sf::RenderWindow &w) = 0;
+virtual ~Entity() {};
 };
 
 #endif

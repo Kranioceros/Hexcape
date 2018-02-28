@@ -22,6 +22,7 @@ private:
 public:
 	Escotilla(unsigned int x, unsigned int y, float _rapidez, const std::vector<Pared>* _paredes,
 			sf::Texture &_tex, sf::Texture &_tex_bola);
+	~Escotilla();
 	void update(float elapsed) override;
 	void draw(sf::RenderWindow &w) override;
 	Bola* spawn();

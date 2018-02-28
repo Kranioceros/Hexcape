@@ -225,3 +225,7 @@ void Player::moverse() {
 		offset.x = offset.y = 0;
 	}
 }
+
+Player::~Player() {
+
+}

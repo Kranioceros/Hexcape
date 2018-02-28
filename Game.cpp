@@ -37,14 +37,15 @@ void Game::run(){
 				window.close();
 			}
 		}
-		update();
 		draw();
+		update();
 		if(nextScene != nullptr){
 			delete currentScene;
 			currentScene = nextScene;
 			nextScene = nullptr;
 		}
 	}
+	delete currentScene;
 }
 
 
@@ -64,4 +65,8 @@ void Game::draw(){
 
 void Game::switchScene(BaseScene *scene){
 	nextScene = scene;
+}
+
+void Game::cerrarJuego() {
+	currentScene = nullptr;
 }

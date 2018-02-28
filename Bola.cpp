@@ -98,3 +98,6 @@ void Bola::moverse() {
 const sf::Sprite& Bola::getSprite() const {
 	return spr;
 }
+
+Bola::~Bola() {
+}

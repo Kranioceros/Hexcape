@@ -76,3 +76,7 @@ void Escotilla::cambiarAnim() {
 	}
 
 }
+
+Escotilla::~Escotilla() {
+
+}

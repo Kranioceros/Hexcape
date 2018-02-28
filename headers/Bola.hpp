@@ -22,8 +22,9 @@ private:
 	
 public:
 	Bola(float _x, float _y, float angulo, float _rapidez, float _tiempo_spawn, const sf::Texture &_tex, const std::vector<Pared> *_paredes);
-	virtual void update(float elapsed) override;
-	virtual void draw(sf::RenderWindow &w) override;
+	~Bola();
+	void update(float elapsed) override;
+	void draw(sf::RenderWindow &w) override;
 	const sf::Sprite& getSprite() const;
 };
 
