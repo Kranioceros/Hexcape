@@ -1,4 +1,4 @@
-#include "headers/Pared.hpp"
+#include "Pared.hpp"
 #include <cmath>
 #include <iostream>
 

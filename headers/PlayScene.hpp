@@ -2,7 +2,7 @@
 #define PLAYSCENE_HPP
 
 #include <SFML/Graphics.hpp>
-#include "Laberinto.h"
+#include "Laberinto.hpp"
 #include "BaseScene.hpp"
 #include "Player.hpp"
 #include "Bola.hpp"

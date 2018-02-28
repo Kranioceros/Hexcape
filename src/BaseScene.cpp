@@ -1,4 +1,4 @@
-#include "headers/BaseScene.hpp"
+#include "BaseScene.hpp"
 #include <vector>
 
 BaseScene::BaseScene() {

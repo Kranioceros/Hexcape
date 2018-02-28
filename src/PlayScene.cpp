@@ -1,7 +1,7 @@
-#include "headers/PlayScene.hpp"
-#include "headers/Laberinto.h"
-#include "headers/Game.hpp"
-#include "headers/GameOverScene.hpp"
+#include "PlayScene.hpp"
+#include "Laberinto.hpp"
+#include "Game.hpp"
+#include "GameOverScene.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include <iostream>
 #include <cstdlib>

@@ -1,6 +1,6 @@
-#include "headers/GameOverScene.hpp"
-#include "headers/Game.hpp"
-#include "headers/PlayScene.hpp"
+#include "GameOverScene.hpp"
+#include "Game.hpp"
+#include "PlayScene.hpp"
 #include <iostream>
 
 GameOverScene::GameOverScene() {
@@ -8,7 +8,7 @@ GameOverScene::GameOverScene() {
 	view.setCenter(1920 / 2, 1080 / 2);
 	view.zoom(1);
 
-	font.loadFromFile("assets/munro/munro.ttf");
+	font.loadFromFile("fonts/munro.ttf");
 	game_over_text.setFont(font);
 	game_over_text.setString("YOU DIED");
 	game_over_text.setCharacterSize(32);

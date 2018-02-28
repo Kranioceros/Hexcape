@@ -1,38 +1,24 @@
-OBJS=${OBJS_DIR}/main.o 
-TESTS=${TESTS_DIR}/prueba_sonido main
+SOURCES=$(notdir $(wildcard $(SRC_DIR)/*.cpp))
+OBJS=$(SOURCES:.cpp=.o)
+DEPS=$(OBJS:.o=.d)
 
-#TESTS=${TESTS_DIR}/prueba_sfml ${TESTS_DIR}/prueba_grilla ${TESTS_DIR}/prueba_hexagono ${TESTS_DIR}/prueba_pathfinding ${TESTS_DIR}/prueba_tileset ${TESTS_DIR}/prueba_boundingbox
+all: $(PROGRAM)
 
-${OBJS_DIR}/main.o: main.cpp
-	${GPP} ${FLAGS} -c main.cpp -o $@
+$(PROGRAM): $(addprefix $(BUILD_DIR)/,$(OBJS))
+	$(GPP) $^ $(LIBS) -o $(PROGRAM)
 
-# Una pequeña prueba en SFML para comprobar que esta bien instalado
-${TESTS_DIR}/prueba_sfml: $(TESTS_DIR)/prueba_sfml.cpp
-	$(GPP) $(TESTS_DIR)/prueba_sfml.cpp $(FLAGS) $(LIBS) -o $@
-	
-# Una prueba para verificar que el algoritmo generador de laberintos funciona
-${TESTS_DIR}/prueba_grilla: $(TESTS_DIR)/prueba_grilla.cpp Laberinto.cpp Dibujo.cpp
-	$(GPP) $(TESTS_DIR)/prueba_grilla.cpp Laberinto.cpp Dibujo.cpp $(FLAGS) $(LIBS) -o $@
+include $(addprefix $(BUILD_DIR)/,$(DEPS)) # include all deps files
 
-${TESTS_DIR}/prueba_hexagono: $(TESTS_DIR)/prueba_hexagono.cpp Laberinto.cpp
-	$(GPP) $(TESTS_DIR)/prueba_hexagono.cpp Laberinto.cpp $(FLAGS) $(LIBS) -o $@
+$(BUILD_DIR)/%.d: $(SRC_DIR)/%.cpp
+	$(GPP) $(FLAGS) $< -MM -MT $(addsuffix .o,$(basename $(notdir $@))) > $@
 
-# Una prueba para probar pathfinding dentro del laberinto
-${TESTS_DIR}/prueba_pathfinding: $(TESTS_DIR)/prueba_pathfinding.cpp Laberinto.cpp
-	$(GPP) $(TESTS_DIR)/prueba_pathfinding.cpp Laberinto.cpp $(FLAGS) $(LIBS) -o $@
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
+	$(GPP) $(FLAGS) -c $< -o $@
 
-# Una prueba del tileset
-${TESTS_DIR}/prueba_tileset: $(TESTS_DIR)/prueba_tileset.cpp Laberinto.cpp
-	$(GPP) $(TESTS_DIR)/prueba_tileset.cpp Laberinto.cpp $(FLAGS) $(LIBS) -o $@
+.PHONY: clean
+clean:
+	rm -f $(BUILD_DIR)/*.o $(PROGRAM)
 
-# Una prueba para verificar el funcionamiento de boundingbox (local y global)
-${TESTS_DIR}/prueba_boundingbox: $(TESTS_DIR)/prueba_boundingbox.cpp Collision.cpp Laberinto.cpp Dibujo.cpp
-	$(GPP) $(TESTS_DIR)/prueba_boundingbox.cpp Collision.cpp Laberinto.cpp Dibujo.cpp $(FLAGS) $(LIBS) -o $@
-	
-# Una prueba para verificar el funcionamiento del sonido
-${TESTS_DIR}/prueba_sonido: $(TESTS_DIR)/prueba_sonido.cpp
-	$(GPP) $(TESTS_DIR)/prueba_sonido.cpp $(FLAGS) $(LIBS) -o $@
-
-# EL JUEGO!
-main: main.cpp BaseScene.cpp Collision.cpp Game.cpp Laberinto.cpp PlayScene.cpp Player.cpp Pared.cpp Bola.cpp Escotilla.cpp GameOverScene.cpp
-	$(GPP) $(FLAGS) main.cpp PlayScene.cpp BaseScene.cpp Collision.cpp Game.cpp Laberinto.cpp Player.cpp Pared.cpp Bola.cpp Escotilla.cpp GameOverScene.cpp $(LIBS) -o $@
+.PHONY: cleandep
+cleandep:
+	rm -f $(BUILD_DIR)/*.d

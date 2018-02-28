@@ -1,7 +1,7 @@
-#include "headers/Bola.hpp"
+#include "Bola.hpp"
 #include <cmath>
 #include <iostream>
-#include "headers/Collision.h"
+#include "Collision.h"
 
 Bola::Bola(float _x, float _y, float angulo, float _rapidez, float _tiempo_spawn, const sf::Texture &_tex, const std::vector<Pared> *_paredes) : tex(_tex) {
 	x = _x; y = _y; rapidez = _rapidez;

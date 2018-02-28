@@ -1,4 +1,4 @@
-#include "headers/Laberinto.h"
+#include "Laberinto.hpp"
 #include <cstdlib>
 #include <ctime>
 #include <iostream>

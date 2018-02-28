@@ -1,4 +1,4 @@
-#include "headers/Escotilla.hpp"
+#include "Escotilla.hpp"
 #include <iostream>
 #include <cmath>
 #include <cstdlib>

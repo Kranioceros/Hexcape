@@ -1,6 +1,6 @@
-#include "headers/Player.hpp"
-#include "headers/Collision.h"
-#include "headers/Game.hpp"
+#include "Player.hpp"
+#include "Collision.h"
+#include "Game.hpp"
 #include <cmath>
 #include <iostream>
 

@@ -4,7 +4,7 @@
  */
 #include <SFML/Graphics.hpp>
 #include <map>
-#include "headers/Collision.h"
+#include "Collision.h"
 
 namespace Collision
 {

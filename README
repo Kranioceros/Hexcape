@@ -1,6 +1,7 @@
 Este es un proyecto de ZinjaI que usa Makefiles para poder obtener ejecutables 
 tanto en Windows como en Linux.
 
-Hexgen es un generador de laberintos hexagonales que usa SFML como libreria
-grafica.
-
+Hexcape es un juego 2D donde el jugador debe guiar a un joven mago principiante
+fuera de un laberinto infernal. Reflejos y velocidad seran necesarios para que
+el pobre hechicero pueda escapar del laberinto hexagonal en el que su propio
+maestro lo encerro.

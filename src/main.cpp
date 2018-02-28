@@ -1,6 +1,6 @@
-#include "headers/Game.hpp"
-#include "headers/BaseScene.hpp"
-#include "headers/PlayScene.hpp"
+#include "Game.hpp"
+#include "BaseScene.hpp"
+#include "PlayScene.hpp"
 
 using namespace sf;
 
