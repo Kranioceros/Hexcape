@@ -197,7 +197,7 @@ void Player::moverse() {
 		}
 	}
 
-	if ( closest_dist.x*closest_dist.x + closest_dist.y + closest_dist.y < 10*10 ) {
+	if ( closest_dist.x*closest_dist.x + closest_dist.y*closest_dist.y < 15*15 ) {
 		estado = GANO;
 		offset.x = offset.y = 0;
 	}
