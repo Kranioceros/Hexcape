@@ -1,31 +1,20 @@
-# Poner aca las rutas a los directorios de instalacion de ZinjaI y SFML
-ZINJA_DIR="C:/Program Files (x86)/zinjai"
-SFML_DIR="D:/Program Files (x86)/SFML-2.4.2"
+# Poner en "windows-libs" las rutas a los directorios de instalacion de ZinjaI y SFML
+include windows-libs
 
 ZINJA_GCC_INCLUDE_DIR=${ZINJA_DIR}/mingw32-gcc6/include
 ZINJA_GCC_LIB_DIR=${ZINJA_DIR}/mingw32-gcc6/libs
 SFML_INCLUDE_DIR=${SFML_DIR}/include
 SFML_LIB_DIR=${SFML_DIR}/lib
 
-OBJS_DIR=Build.w32
-TESTS_DIR=tests
+PROGRAM=hexcape.exe
+BUILD_DIR=Build.w32
+SRC_DIR=src
 GPP=mingw32-g++
 GCC=mingw32-gcc
-FLAGS= --show-column -g2 -Wall -O0 -DSFML_STATIC -D_DEBUG -I ${SFML_INCLUDE_DIR} -I ${ZINJA_GCC_INCLUDE_DIR} -std=c++11
-LIBS=-static -static-libgcc -static-libstdc++ -L ${SFML_LIB_DIR} -lsfml-audio-s -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -L ${ZINJA_GCC_LIB_DIR} -lOpenGL32 -lwinmm -ljpeg -lgdi32 -lopenal32 -lflac -lvorbisenc -lvorbisfile -lvorbis -logg
-
-all: tests ${OBJS_DIR} ${OBJS_DIR}/Project.exe
+FLAGS=-Iheaders --show-column -g2 -Wall -O0 -DSFML_STATIC -D_DEBUG -I ${SFML_INCLUDE_DIR} -I ${ZINJA_GCC_INCLUDE_DIR} -std=c++11
+LIBS=-static -static-libgcc -static-libstdc++ -L ${SFML_LIB_DIR} -lsfml-audio-s -lsfml-graphics-s -lsfml-window-s -lsfml-system-s -L ${ZINJA_GCC_LIB_DIR} -lOpenGL32 -lfreetype -lwinmm -ljpeg -lgdi32 -lopenal32 -lflac -lvorbisenc -lvorbisfile -lvorbis -logg
 
 include Makefile.common
 
-tests: ${TESTS}
-
 clean:
-	del /Q ${OBJS} ${OBJS_DIR}/Project.exe
-
-${OBJS_DIR}/Project.exe: ${OBJS}
-	${GPP} ${OBJS} ${LIBS} -o $@
-
-${OBJS_DIR}:
-	mkdir ${OBJS_DIR}
-
+	del /Q ${BUILD_DIR}/*.o

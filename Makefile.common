@@ -14,11 +14,3 @@ $(BUILD_DIR)/%.d: $(SRC_DIR)/%.cpp
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(GPP) $(FLAGS) -c $< -o $@
-
-.PHONY: clean
-clean:
-	rm -f $(BUILD_DIR)/*.o $(PROGRAM)
-
-.PHONY: cleandep
-cleandep:
-	rm -f $(BUILD_DIR)/*.d
