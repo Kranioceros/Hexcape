@@ -25,6 +25,7 @@ public:
 	~Bola();
 	void update(float elapsed) override;
 	void draw(sf::RenderWindow &w) override;
+	bool existe() const; // devuelve true si esta en estado NORMAL
 	const sf::Sprite& getSprite() const;
 };
 

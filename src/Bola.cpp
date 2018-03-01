@@ -106,5 +106,9 @@ const sf::Sprite& Bola::getSprite() const {
 	return spr;
 }
 
+bool Bola::existe() const {
+	return estado == NORMAL;
+}
+
 Bola::~Bola() {
 }

@@ -52,7 +52,9 @@ const sf::Vector2f Player::verOffset() const {
 
 bool Player::chocoBola() {
 	auto bola = bolas->begin();
-	while(bola != bolas->end() && Collision::BoundingBoxTest(hitbox_spr, (*bola)->getSprite()) == false) {
+	while(bola != bolas->end() &&
+	!(Collision::BoundingBoxTest(hitbox_spr, (*bola)->getSprite()) &&
+	(*bola)->existe())) {
 		bola++;	
 	}
 
