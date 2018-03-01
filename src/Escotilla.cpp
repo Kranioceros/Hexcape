@@ -4,7 +4,8 @@
 #include <cstdlib>
 
 Escotilla::Escotilla(unsigned int x, unsigned int y, float _rapidez, const std::vector<Pared>* _paredes,
-	       sf::Texture &_tex, sf::Texture &_tex_bola) : tex(_tex), tex_bola(_tex_bola) {
+	       sf::Texture &_tex, sf::Texture &_tex_bola) : tex(_tex), tex_bola(_tex_bola)
+{
 	spr.setTexture(tex);
 	spr.setTextureRect(sf::IntRect(0, 0, 86, 86));
 	spr.setOrigin(43, 43);

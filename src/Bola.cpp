@@ -10,13 +10,15 @@ Bola::Bola(float _x, float _y, float angulo, float _rapidez, float _tiempo_spawn
 	velocidad.x = sin(angulo) * rapidez;
 	velocidad.y = cos(angulo) * rapidez;
 	paredes = _paredes;
+	spr.setPosition(x, y);
 	spr.setTexture(tex);
 	clock_spawn.restart();
 }
 
 void Bola::update(float elapsed) {
-	if (estado != SPAWNING)
+	if (estado != SPAWNING) {
 		moverse();
+	}
 	else {
 		sf::Time tiempo = clock_spawn.getElapsedTime();
 		if (tiempo.asMilliseconds() > tiempo_spawn) {
@@ -26,8 +28,9 @@ void Bola::update(float elapsed) {
 }
 
 void Bola::draw(sf::RenderWindow &w) {
-	if (estado != SPAWNING)
+	if (estado != SPAWNING) {
 		w.draw(spr);
+	}
 }
 
 void Bola::moverse() {
@@ -41,7 +44,9 @@ void Bola::moverse() {
 	auto pared_chocada = paredes->begin();
 
 	/* Mientras haya paredes para revisar Y no haya chocado */
-	while(pared_chocada != paredes->end() && Collision::BoundingBoxTest(spr, pared_chocada->verSprite()) == false) {
+	while(pared_chocada != paredes->end() &&
+	Collision::BoundingBoxTest(spr, pared_chocada->verSprite()) == false)
+	{
 		pared_chocada++;
 	}
 
@@ -73,7 +78,9 @@ void Bola::moverse() {
 		 * la descarta y se toma la direccion contraria */
 		pared_chocada = paredes->begin();
 
-		while(pared_chocada != paredes->end() && Collision::BoundingBoxTest(spr, pared_chocada->verSprite()) == false) {
+		while(pared_chocada != paredes->end() &&
+		Collision::BoundingBoxTest(spr, pared_chocada->verSprite()) == false)
+		{
 			pared_chocada++;
 		}
 
