@@ -1,6 +1,7 @@
 #include "GameOverScene.hpp"
 #include "Game.hpp"
 #include "PlayScene.hpp"
+#include "TransitionScene.h"
 #include <iostream>
 
 GameOverScene::GameOverScene() {
@@ -26,7 +27,7 @@ GameOverScene::GameOverScene() {
 
 void GameOverScene::update(float elapsed) {
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
-		Game::getInstance().switchScene(new PlayScene(0.2));
+		Game::getInstance().switchScene(new TransitionScene(1));
 	} else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
 		Game::getInstance().cerrarJuego();
 	}

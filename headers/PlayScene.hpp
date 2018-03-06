@@ -27,8 +27,9 @@ private:
 	sf::Clock tiempo_player;
 	float tiempo_spawn_bolas;
 	unsigned int max_bolas;
+	unsigned int num_nivel;
 public:
-	PlayScene(float _tiempo_spawn_bolas);
+	PlayScene(float _tiempo_spawn_bolas,unsigned int _num_nivel);
 	virtual ~PlayScene() override;
 	void update(float elapsed) override;
 	void draw(sf::RenderWindow &w) override;

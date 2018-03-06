@@ -38,6 +38,7 @@ public:
 	const sf::Vector2f verOffset() const;
 	void moverse();
 	Estado_Player verEstado(){ return estado; }
+	
 };
 
 #endif

@@ -172,6 +172,7 @@ void Player::moverse() {
 		estado = MUERTO;
 		offset.x = offset.y = 0;
 		spr.setTexture(tex_muerto, true);
+		
 	}
 
 	/* Si el jugador choco con el portal, GANA (se usa deteccion de colisiones
@@ -202,6 +203,7 @@ void Player::moverse() {
 		offset.x = offset.y = 0;
 	}
 }
+
 
 Player::~Player() {
 

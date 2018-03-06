@@ -1,4 +1,5 @@
 #include "PlayScene.hpp"
+#include "TransitionScene.h"
 #include "Laberinto.hpp"
 #include "Game.hpp"
 #include "GameOverScene.hpp"
@@ -6,7 +7,9 @@
 #include <iostream>
 #include <cstdlib>
 
-PlayScene::PlayScene(float _tiempo_spawn_bolas) : lab(time(nullptr), 0, 0, 5, 5, 0.02) {
+PlayScene::PlayScene(float _tiempo_spawn_bolas,unsigned int _num_nivel) : lab(time(nullptr), 0, 0, 5, 5, 0.02) {
+	num_nivel=_num_nivel;
+	
 	bola.loadFromFile("assets/bola2.png");
 	escotilla.loadFromFile("assets/escotillas-516x86.png");
 	portal.loadFromFile("assets/portal.png");
@@ -72,7 +75,7 @@ void PlayScene::update(float elapsed){
 		e->update(elapsed);
 
 	spr_portal.rotate(2);
-
+	
 	BaseScene::update(elapsed);
 	view.move(player->verOffset());
 
@@ -93,8 +96,9 @@ void PlayScene::update(float elapsed){
 		case 2: // Gano
 		{
 		sf::Time tiempo = tiempo_player.getElapsedTime();
+			//player->verSprite().rotate(3);
 		if(tiempo.asMilliseconds() > tiempo_victoria)
-			Game::getInstance().switchScene(new PlayScene(0.2));
+			Game::getInstance().switchScene(new TransitionScene(num_nivel));
 		}
 		break;
 
