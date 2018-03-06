@@ -36,7 +36,7 @@ MenuScene::MenuScene() {
 
 void MenuScene::update(float elapsed) {
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
-		Game::getInstance().switchScene(new TransitionScene(1));
+		Game::getInstance().switchScene(new TransitionScene(0, 0));
 	}
 	spr_portal.rotate(2);
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
@@ -52,6 +52,4 @@ void MenuScene::draw(sf::RenderWindow &w) {
 	w.draw(spr_portal);
 	w.draw(title_text);
 	w.draw(transition_text);
-	
-
 }

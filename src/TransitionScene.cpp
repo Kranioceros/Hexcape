@@ -3,14 +3,18 @@
 #include "Game.hpp"
 #include "PlayScene.hpp"
 #include <sstream>
-TransitionScene::TransitionScene(unsigned num) {
+
+TransitionScene::TransitionScene(unsigned _nro_nivel, unsigned int _puntos_jugador) {
+	nro_nivel = _nro_nivel;
+	nro_nivel++;
+	puntos_jugador = _puntos_jugador;
+
 	view.reset(sf::FloatRect(0, 0, 1920, 1080));
 	view.setCenter(1920 / 2, 1080 / 2);
 	view.zoom(1);
 	espera_clock.restart();
-	nro_nivel = num;
 	std::stringstream ss;
-	ss<<"nivel: "<<nro_nivel<<std::endl;
+	ss << "Nivel " << nro_nivel << std::endl;
 	std::string str = ss.str();
 	font.loadFromFile("fonts/munro.ttf");
 	title_text.setFont(font);
@@ -25,9 +29,8 @@ void TransitionScene::update(float elapsed) {
 	sf::Time tiempo_espera = espera_clock.getElapsedTime();
 	if(tiempo_espera.asSeconds() > 1) {
 		espera_clock.restart();
-		nro_nivel=nro_nivel+1;
-		std::cout<<"aumento el nivel"<<std::endl;
-		Game::getInstance().switchScene(new PlayScene(0.2, nro_nivel));
+		Game::getInstance().switchScene(
+		new PlayScene(nro_nivel, puntos_jugador));
 	}
 }
 

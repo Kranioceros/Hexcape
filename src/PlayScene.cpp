@@ -6,17 +6,35 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <iostream>
 #include <cstdlib>
+#include <cmath>
+#include <sstream>
 
-PlayScene::PlayScene(float _tiempo_spawn_bolas,unsigned int _num_nivel) : lab(time(nullptr), 0, 0, 5, 5, 0.02) {
+unsigned int calcularDimension(unsigned int nro_nivel);
+
+PlayScene::PlayScene(unsigned int _num_nivel, unsigned int _puntos_jugador)
+	: lab(time(nullptr), 0, 0, calcularDimension(_num_nivel), calcularDimension(_num_nivel), 0.02) {
+	
+	font.loadFromFile("fonts/munro.ttf");
+	debug.setFont(font);
+	debug.setFillColor(sf::Color::Yellow);
+	debug.setString("NULL");
+	debug.setPosition(-250, -60);
+	debug.setCharacterSize(16);
+
 	num_nivel=_num_nivel;
+	puntos_jugador = _puntos_jugador;
+	puntos_escena = 500 + 100*(num_nivel-1);
+
+	tiempo_muerto = 3000;
+	tiempo_victoria = 3000;
+
+	tiempo_spawn_bolas = 0.39169*pow(num_nivel, -0.55352);
+	max_bolas = 1.2*pow(lab.VerGrilla().ancho(), 2) + 2*num_nivel; 
 	
 	bola.loadFromFile("assets/bola2.png");
 	escotilla.loadFromFile("assets/escotillas-516x86.png");
 	portal.loadFromFile("assets/portal.png");
-	tiempo_spawn_bolas = _tiempo_spawn_bolas;
 
-	tiempo_muerto = 3000;
-	tiempo_victoria = 3000;
 	player = new Player(200, 200, &lab.verParedes(), &bolas, spr_portal);
 	add(player);	
 
@@ -25,7 +43,6 @@ PlayScene::PlayScene(float _tiempo_spawn_bolas,unsigned int _num_nivel) : lab(ti
 	view.zoom(0.5);
 
 	bolas_clock.restart();
-	max_bolas = 30;
 
 	const float lado = 150, altura_lado = 130;
 	const float ancho = 2*altura_lado;
@@ -49,13 +66,17 @@ PlayScene::PlayScene(float _tiempo_spawn_bolas,unsigned int _num_nivel) : lab(ti
 	/* Se agrega el portal al final de la escena */
 	spr_portal.setTexture(portal);
 	spr_portal.setOrigin(45, 45);
-	spr_portal.setPosition((lab.VerGrilla().ancho()-1)*ancho + (lab.VerGrilla().alto()-1)*altura_lado + altura_lado					,(lab.VerGrilla().alto()-1)*(3.0/2)*lado+lado);
+	spr_portal.setPosition((lab.VerGrilla().ancho()-1)*ancho + (lab.VerGrilla().alto()-1)*altura_lado + altura_lado,(lab.VerGrilla().alto()-1)*(3.0/2)*lado+lado);
+
+	/* Se comienza a contar el tiempo del jugador */
+	tiempo_score.restart();
 }
 
 void PlayScene::update(float elapsed){
-	sf::Time bolas_time = bolas_clock.getElapsedTime();
+
 
 	/* Se agregan nuevas bolas dependiendo del timer */
+	sf::Time bolas_time = bolas_clock.getElapsedTime();
 	if(bolas_time.asSeconds() > tiempo_spawn_bolas) {
 		bolas_clock.restart();
 		Bola* nueva_bola = escotillas[rand() % escotillas.size()]->spawn();
@@ -79,6 +100,28 @@ void PlayScene::update(float elapsed){
 	BaseScene::update(elapsed);
 	view.move(player->verOffset());
 
+	/* Se actualiza la puntuacion */
+	float segundos_score = tiempo_score.getElapsedTime().asSeconds();
+
+	/* Si paso un segundo y el jugador no ha ganado o perdido */
+	if(segundos_score > 1 && player->verEstado() == 1) {
+		tiempo_score.restart();
+		puntos_escena -= 10;
+	}
+
+	/* Se actualiza el mensaje debug */
+	stringstream ss;
+	int tamanio = lab.VerGrilla().ancho();
+	ss << "Nro nivel: " << num_nivel << std::endl
+	   << "Tamanio del laberinto: " << tamanio << "x" << tamanio << std::endl
+	   << "Nro. de bolas: " << bolas.size() << "/" << max_bolas << std::endl
+	   << "Velocidad de spawneo: " << tiempo_spawn_bolas << std::endl
+	   << "Puntos de escena: " << puntos_escena << std::endl
+	   << "Puntos de jugador: " << puntos_jugador << std::endl;
+	debug.setString(ss.str());
+
+	debug.move(player->verOffset().x, player->verOffset().y);
+
 	/* Si el jugador perdio/gano, se cambia de escena */
 	switch(player->verEstado()) {
 		case 1: // Jugando
@@ -89,16 +132,17 @@ void PlayScene::update(float elapsed){
 		{
 		sf::Time tiempo = tiempo_player.getElapsedTime();
 		if(tiempo.asMilliseconds() > tiempo_muerto)
-			Game::getInstance().switchScene(new GameOverScene());
+			Game::getInstance().switchScene(
+			new GameOverScene(puntos_jugador));
 		}
 		break;
 
 		case 2: // Gano
 		{
 		sf::Time tiempo = tiempo_player.getElapsedTime();
-			//player->verSprite().rotate(3);
 		if(tiempo.asMilliseconds() > tiempo_victoria)
-			Game::getInstance().switchScene(new TransitionScene(num_nivel));
+			Game::getInstance().switchScene(
+			new TransitionScene(num_nivel, puntos_jugador + puntos_escena + 500));
 		}
 		break;
 
@@ -114,6 +158,9 @@ void PlayScene::draw(sf::RenderWindow &w){
 
 	/* Se dibujan las entidades */
 	BaseScene::draw(w);
+
+	/* Se dibuja el mensaje de debug */
+	w.draw(debug);
 }
 
 PlayScene::~PlayScene() {
@@ -122,4 +169,10 @@ PlayScene::~PlayScene() {
 	for (auto &b : bolas)
 		delete b;
 	remove(player);
+}
+
+unsigned int calcularDimension(unsigned int nro_nivel) {
+	/* Curva obtenida por inteligencia artificial y otros metodos
+	 * muy complejos */
+	return 2.78673 * log(nro_nivel) + 2.85108;
 }

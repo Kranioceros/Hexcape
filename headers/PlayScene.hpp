@@ -16,6 +16,8 @@ private:
 
 	sf::Texture portal;
 	sf::Sprite spr_portal;
+	sf::Font font;
+	sf::Text debug;
 
 	Laberinto lab;
 	Player* player;
@@ -25,11 +27,14 @@ private:
 	vector<Escotilla*> escotillas;
 	sf::Clock bolas_clock;
 	sf::Clock tiempo_player;
+	sf::Clock tiempo_score;
 	float tiempo_spawn_bolas;
 	unsigned int max_bolas;
 	unsigned int num_nivel;
+	unsigned int puntos_jugador;
+	unsigned int puntos_escena;
 public:
-	PlayScene(float _tiempo_spawn_bolas,unsigned int _num_nivel);
+	PlayScene(unsigned int _num_nivel, unsigned int _puntos_jugador);
 	virtual ~PlayScene() override;
 	void update(float elapsed) override;
 	void draw(sf::RenderWindow &w) override;

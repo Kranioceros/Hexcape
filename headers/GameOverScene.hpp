@@ -11,8 +11,10 @@ private:
 	sf::Font font;
 	sf::View view;
 
+	unsigned int puntos_jugador;
+
 public:
-	GameOverScene();
+	GameOverScene(unsigned int _puntos_jugador);
 	void update(float elapsed) override;
 	void draw(sf::RenderWindow &w) override;
 };
