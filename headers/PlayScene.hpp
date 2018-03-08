@@ -14,6 +14,9 @@ private:
 	sf::View view;
 	sf::Texture bola;
 	sf::Texture escotilla;
+	sf::Texture fondo;
+	sf::Sprite spr_fondo;
+
 
 	sf::Texture portal;
 	sf::Sprite spr_portal;

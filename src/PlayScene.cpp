@@ -13,12 +13,10 @@ unsigned int calcularDimension(unsigned int nro_nivel);
 
 PlayScene::PlayScene(unsigned int _num_nivel, unsigned int _puntos_jugador)
 	: lab(time(nullptr), 0, 0, calcularDimension(_num_nivel), calcularDimension(_num_nivel), 0.02), bolas(0) {
-	
 	font.loadFromFile("fonts/munro.ttf");
 	debug.setFont(font);
 	debug.setFillColor(sf::Color::Yellow);
 	debug.setString("NULL");
-	debug.setPosition(-250, -60);
 	debug.setCharacterSize(16);
 
 	num_nivel=_num_nivel;
@@ -34,13 +32,24 @@ PlayScene::PlayScene(unsigned int _num_nivel, unsigned int _puntos_jugador)
 	bola.loadFromFile("assets/bola2.png");
 	escotilla.loadFromFile("assets/escotillas-516x86.png");
 	portal.loadFromFile("assets/portal.png");
+	fondo.loadFromFile("assets/fondo.png");
+
+	spr_fondo.setTexture(fondo);
 
 	player = new Player(200, 200, &lab.verParedes(), &bolas, spr_portal);
 	add(player);	
 
+	sf::Vector2f player_pos = player->verPosicion();
+
 	view.reset(sf::FloatRect(0, 0, 1920, 1080));	
-	view.setCenter(player->verPosicion().x, player->verPosicion().y);
+	view.setCenter(player_pos.x, player_pos.y);
 	view.zoom(0.5);
+
+	spr_fondo.setPosition(player_pos.x - spr_fondo.getLocalBounds().width / 2,
+				player_pos.y - spr_fondo.getLocalBounds().height / 2);
+
+	debug.setPosition(player_pos.x - 1920 / 4 + 5,
+				player_pos.y - 1080 / 4 + 5);
 
 	bolas_clock.restart();
 
@@ -115,6 +124,23 @@ void PlayScene::update(float elapsed){
 	BaseScene::update(elapsed);
 	view.move(player->verOffset());
 
+	/* Se actualiza la posicion del fondo si el jugador se movio fuera del
+	 * area que ocupa el sprite */
+	sf::Vector2f player_pos = player->verPosicion();
+	sf::Vector2f fondo_pos = spr_fondo.getPosition();
+	float fondo_ancho = spr_fondo.getLocalBounds().width,
+	      fondo_alto = spr_fondo.getLocalBounds().height;
+
+	if(player_pos.x < fondo_pos.x || player_pos.x > fondo_pos.x + fondo_ancho) {
+		float sentido = player_pos.x < fondo_pos.x ? -1 : 1;
+		spr_fondo.move(fondo_ancho*sentido, 0);
+	}
+
+	if(player_pos.y < fondo_pos.y || player_pos.y > fondo_pos.y + fondo_alto) {
+		float sentido = player_pos.y < fondo_pos.y ? -1 : 1;
+		spr_fondo.move(0, fondo_alto*sentido);
+	}
+
 	/* Se actualiza la puntuacion */
 	float segundos_score = tiempo_score.getElapsedTime().asSeconds();
 
@@ -166,6 +192,27 @@ void PlayScene::update(float elapsed){
 
 void PlayScene::draw(sf::RenderWindow &w){
 	w.setView(view);
+
+	/* Se dibuja el fondo 9 veces: una en la posicion del sprite y las otras
+	 * 8 en las posiciones adyacentes y las esquinas. Esto forma una rejilla
+	 * de 3x3 */
+	sf::Vector2f fondo_pos = spr_fondo.getPosition();
+	float fondo_ancho = spr_fondo.getLocalBounds().width,
+	      fondo_alto  = spr_fondo.getLocalBounds().height;
+
+	/* Posicion de la primera celda */
+	sf::Vector2f fondo_origen(fondo_pos.x - fondo_ancho,
+				  fondo_pos.y - fondo_alto);
+
+	for(unsigned int fila=0; fila < 3; fila++) {
+		for(unsigned int col=0; col < 3; col++) {
+			spr_fondo.setPosition(fondo_origen.x + fondo_ancho*col,
+					      fondo_origen.y + fondo_alto*fila);
+			w.draw(spr_fondo);
+		}
+	}
+	spr_fondo.setPosition(fondo_pos);
+
 	lab.DibujarLab(w, 0, 0);
 	for(auto &e : escotillas)
 		e->draw(w);
