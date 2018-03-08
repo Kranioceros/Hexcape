@@ -7,6 +7,7 @@
 #include "Player.hpp"
 #include "Bola.hpp"
 #include "Escotilla.hpp"
+#include <deque>
 
 class PlayScene: public BaseScene {
 private:
@@ -23,7 +24,7 @@ private:
 	Player* player;
 	float tiempo_muerto, tiempo_victoria;
 
-	vector<Bola*> bolas;
+	deque<Bola*> bolas;
 	vector<Escotilla*> escotillas;
 	sf::Clock bolas_clock;
 	sf::Clock tiempo_player;

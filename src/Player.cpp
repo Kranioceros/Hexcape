@@ -4,7 +4,7 @@
 #include <cmath>
 #include <iostream>
 
-Player::Player(unsigned int x, unsigned int y, const std::vector<Pared> *p, const std::vector<Bola*> *_bolas,
+Player::Player(unsigned int x, unsigned int y, const std::vector<Pared> *p, const std::deque<Bola*> *_bolas,
 		const sf::Sprite &_spr_portal) : spr_portal(_spr_portal) {
 
 	tex.loadFromFile("assets/player_spritesheet.png"); spr.setTexture(tex);

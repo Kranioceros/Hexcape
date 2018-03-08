@@ -37,9 +37,6 @@ void TransitionScene::update(float elapsed) {
 void TransitionScene::draw(sf::RenderWindow &w) {
 	w.setView(view);
 	w.draw(title_text);
-	
-	
-	
 }
 
 

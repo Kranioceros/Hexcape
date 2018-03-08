@@ -14,6 +14,7 @@ void BaseScene::update(float elapsed) {
 	for(auto d: to_delete){
 		auto it = find(entities.begin(), entities.end(), d);
 		if(it != entities.end()){
+			delete *it;
 			entities.erase(it);
 		}
 	}

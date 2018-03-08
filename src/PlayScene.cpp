@@ -12,7 +12,7 @@
 unsigned int calcularDimension(unsigned int nro_nivel);
 
 PlayScene::PlayScene(unsigned int _num_nivel, unsigned int _puntos_jugador)
-	: lab(time(nullptr), 0, 0, calcularDimension(_num_nivel), calcularDimension(_num_nivel), 0.02) {
+	: lab(time(nullptr), 0, 0, calcularDimension(_num_nivel), calcularDimension(_num_nivel), 0.02), bolas(0) {
 	
 	font.loadFromFile("fonts/munro.ttf");
 	debug.setFont(font);
@@ -58,7 +58,8 @@ PlayScene::PlayScene(unsigned int _num_nivel, unsigned int _puntos_jugador)
 			if(escotillas.size() < lab.VerGrilla().ancho() * lab.VerGrilla().alto() - 1) {
 				Escotilla* ptr_escotilla =
 				new Escotilla(xr+altura_lado, yr+lado, 2, &lab.verParedes(), escotilla, bola);
-				escotillas.push_back(ptr_escotilla);
+				if (ptr_escotilla != nullptr)
+					escotillas.push_back(ptr_escotilla);
 			}
 		}
 	}
@@ -73,30 +74,44 @@ PlayScene::PlayScene(unsigned int _num_nivel, unsigned int _puntos_jugador)
 }
 
 void PlayScene::update(float elapsed){
-
-
 	/* Se agregan nuevas bolas dependiendo del timer */
+
 	sf::Time bolas_time = bolas_clock.getElapsedTime();
 	if(bolas_time.asSeconds() > tiempo_spawn_bolas) {
 		bolas_clock.restart();
+
 		Bola* nueva_bola = escotillas[rand() % escotillas.size()]->spawn();
+
+		/* Si realmente se agrego una nueva bola */
 		if (nueva_bola != nullptr) {
 			add(nueva_bola);
 			bolas.push_back(nueva_bola);
 		}
 		
 		/* Si son muchas, se empiezan a borrar las mas viejas */
-		if (bolas.size() >= max_bolas) {
-			bolas.erase(bolas.begin());
-			remove(*bolas.begin());
+		if (bolas.size() >= max_bolas && nueva_bola != nullptr) {
+			auto it = bolas.begin();
+			while(it != bolas.end() && (*it)->desapareciendo())
+				it++;
+			(*it)->desaparecer();
+		}
+
+		/* Borrar todas las bolas que ya estan DESAPARECIDAS */
+		for (auto &bola : bolas) {
+			if(bola->desaparecio()) {
+				remove(*bolas.begin());
+				bolas.pop_front();
+			}
 		}
 	}
-	/* Se actualizan todas las entidades */
-	for(auto &e : escotillas)
+	/* Se actualizan las escotillas */
+	for(Escotilla* e : escotillas)
 		e->update(elapsed);
 
+	/* Se gira el portal */
 	spr_portal.rotate(2);
 	
+	/* Se actualizan todas las demas entidades */
 	BaseScene::update(elapsed);
 	view.move(player->verOffset());
 
@@ -166,9 +181,11 @@ void PlayScene::draw(sf::RenderWindow &w){
 PlayScene::~PlayScene() {
 	for (auto &e : escotillas)
 		delete e;
+
 	for (auto &b : bolas)
 		delete b;
-	remove(player);
+
+	delete player;
 }
 
 unsigned int calcularDimension(unsigned int nro_nivel) {

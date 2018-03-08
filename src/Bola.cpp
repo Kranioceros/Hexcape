@@ -5,30 +5,57 @@
 
 Bola::Bola(float _x, float _y, float angulo, float _rapidez, float _tiempo_spawn, const sf::Texture &_tex, const std::vector<Pared> *_paredes) : tex(_tex) {
 	x = _x; y = _y; rapidez = _rapidez;
+	paredes = _paredes;
 	tiempo_spawn = _tiempo_spawn;
 	estado = SPAWNING;
+	desaparecida = false;
+	se_dibuja = true;
+
+
 	velocidad.x = sin(angulo) * rapidez;
 	velocidad.y = cos(angulo) * rapidez;
-	paredes = _paredes;
 	spr.setPosition(x, y);
 	spr.setTexture(tex);
 	clock_spawn.restart();
+	clock_intermitencia.restart();
+	clock_desapareciendo.restart();
 }
 
 void Bola::update(float elapsed) {
-	if (estado != SPAWNING) {
+	switch(estado) {
+		case NORMAL:
 		moverse();
-	}
-	else {
+		break;
+
+		case SPAWNING:
+		{
 		sf::Time tiempo = clock_spawn.getElapsedTime();
-		if (tiempo.asMilliseconds() > tiempo_spawn) {
+		if (tiempo.asMilliseconds() > tiempo_spawn)
 			estado = NORMAL;
 		}
+		break;
+
+		case DESAPARECIENDO:
+		{
+		moverse();
+
+		float msegundos_intermitencia = clock_intermitencia.getElapsedTime().asMilliseconds();
+		if (msegundos_intermitencia > 180) {
+			se_dibuja = se_dibuja ? false : true;
+			clock_intermitencia.restart();
+		}
+
+		float segundos_desapareciendo = clock_desapareciendo.getElapsedTime().asSeconds();
+		if (segundos_desapareciendo > 2) {
+			desaparecida = true;
+		}
+		}
+		break;
 	}
 }
 
 void Bola::draw(sf::RenderWindow &w) {
-	if (estado != SPAWNING) {
+	if (estado != SPAWNING && se_dibuja) {
 		w.draw(spr);
 	}
 }
@@ -111,4 +138,20 @@ bool Bola::existe() const {
 }
 
 Bola::~Bola() {
+}
+
+bool Bola::desaparecio() const {
+	return desaparecida;
+}
+
+bool Bola::desapareciendo() const {
+	return estado == DESAPARECIENDO;
+}
+
+void Bola::desaparecer() {
+	if (estado != DESAPARECIENDO) {
+		estado = DESAPARECIENDO;
+		clock_desapareciendo.restart();
+		clock_intermitencia.restart();
+	}
 }

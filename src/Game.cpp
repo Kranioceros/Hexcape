@@ -68,5 +68,5 @@ void Game::switchScene(BaseScene *scene){
 }
 
 void Game::cerrarJuego() {
-	currentScene = nullptr;
+	window.close();
 }

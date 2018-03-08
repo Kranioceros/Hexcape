@@ -12,11 +12,16 @@ private:
 	sf::Sprite spr;
 	float x, y, rapidez;
 	float tiempo_spawn;
-	enum {SPAWNING, NORMAL} estado;
+	enum {SPAWNING, NORMAL, DESAPARECIENDO} estado;
 	sf::Vector2f velocidad;
 	const std::vector<Pared> *paredes;
 
+	bool desaparecida;
+	bool se_dibuja;
+
 	sf::Clock clock_spawn;
+	sf::Clock clock_desapareciendo;
+	sf::Clock clock_intermitencia;
 
 	void moverse();
 	
@@ -26,6 +31,9 @@ public:
 	void update(float elapsed) override;
 	void draw(sf::RenderWindow &w) override;
 	bool existe() const; // devuelve true si esta en estado NORMAL
+	bool desaparecio() const; // devuelve true si ya debe ELIMINARSE
+	bool desapareciendo() const; // devuelve true si esta en estado DESAPARECIENDO
+	void desaparecer(); // inicia secuencia de desaparicion
 	const sf::Sprite& getSprite() const;
 };
 
