@@ -1,7 +1,7 @@
 #include "Game.hpp"
 #include "BaseScene.hpp"
 #include "PlayScene.hpp"
-#include "MenuScene.h"
+#include "MenuScene.hpp"
 
 
 using namespace sf;

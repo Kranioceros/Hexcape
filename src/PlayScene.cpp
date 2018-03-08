@@ -1,5 +1,5 @@
 #include "PlayScene.hpp"
-#include "TransitionScene.h"
+#include "TransitionScene.hpp"
 #include "Laberinto.hpp"
 #include "Game.hpp"
 #include "GameOverScene.hpp"

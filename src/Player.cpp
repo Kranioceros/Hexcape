@@ -1,5 +1,5 @@
 #include "Player.hpp"
-#include "Collision.h"
+#include "Collision.hpp"
 #include "Game.hpp"
 #include <cmath>
 #include <iostream>

@@ -1,7 +1,7 @@
-#include "MenuScene.h"
+#include "MenuScene.hpp"
 #include "Game.hpp"
 #include "PlayScene.hpp"
-#include "TransitionScene.h"
+#include "TransitionScene.hpp"
 #include <iostream>
 MenuScene::MenuScene() {
 	view.reset(sf::FloatRect(0, 0, 1920, 1080));

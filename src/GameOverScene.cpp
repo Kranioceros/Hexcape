@@ -1,7 +1,7 @@
 #include "GameOverScene.hpp"
 #include "Game.hpp"
 #include "PlayScene.hpp"
-#include "TransitionScene.h"
+#include "TransitionScene.hpp"
 #include <iostream>
 #include <sstream>
 

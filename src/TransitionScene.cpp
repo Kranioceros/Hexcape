@@ -1,4 +1,4 @@
-#include "TransitionScene.h"
+#include "TransitionScene.hpp"
 #include <iostream>
 #include "Game.hpp"
 #include "PlayScene.hpp"
