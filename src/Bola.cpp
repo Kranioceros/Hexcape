@@ -134,7 +134,7 @@ const sf::Sprite& Bola::getSprite() const {
 }
 
 bool Bola::existe() const {
-	return estado == NORMAL;
+	return estado != SPAWNING;
 }
 
 Bola::~Bola() {
