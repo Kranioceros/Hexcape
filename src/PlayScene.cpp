@@ -213,9 +213,14 @@ void PlayScene::draw(sf::RenderWindow &w){
 	}
 	spr_fondo.setPosition(fondo_pos);
 
+	/* Se dibuja el laberinto */
 	lab.DibujarLab(w, 0, 0);
+
+	/* Se dibujan las escotillas */
 	for(auto &e : escotillas)
 		e->draw(w);
+
+	/* Se dibuja el portal */
 	w.draw(spr_portal);
 
 	/* Se dibujan las entidades */

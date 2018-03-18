@@ -15,9 +15,12 @@ private:
 
 	sf::Texture tex;
 	sf::Texture tex_muerto;
+	sf::Texture tex_victoria;
+	sf::Texture tex_mensaje;
 	sf::Texture hitbox_tex;
 	sf::Sprite spr;
 	sf::Sprite hitbox_spr;
+	sf::Sprite mensaje_spr;
 	const std::vector<Pared> *paredes;
 	const std::deque<Bola*> *bolas;
 	sf::Vector2f offset;

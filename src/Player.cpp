@@ -11,6 +11,12 @@ Player::Player(unsigned int x, unsigned int y, const std::vector<Pared> *p, cons
 	spr.setPosition(x, y);
 
 	tex_muerto.loadFromFile("assets/player_muerto.png");
+	tex_victoria.loadFromFile("assets/player_victoria.png");
+
+	tex_mensaje.loadFromFile("assets/victory_message.png");
+	mensaje_spr.setTexture(tex_mensaje);
+	sf::FloatRect dim_mensaje = mensaje_spr.getLocalBounds();
+	mensaje_spr.setOrigin(dim_mensaje.width / 2, dim_mensaje.height / 2);
 
 	hitbox_tex.loadFromFile("assets/akira_hitbox.png");
 	hitbox_spr.setTexture(hitbox_tex);
@@ -39,7 +45,14 @@ void Player::update(float elapsed){
 	}
 }
 void Player::draw(sf::RenderWindow &w){
-	w.draw(spr);
+	if(estado != GANO)
+		w.draw(spr);
+	else {
+		sf::Vector2f pos_player = spr.getPosition();
+		mensaje_spr.setPosition(pos_player.x, pos_player.y - 22);
+		w.draw(spr);
+		w.draw(mensaje_spr);
+	}
 }
 
 const sf::Vector2f Player::verPosicion() const {
@@ -198,9 +211,14 @@ void Player::moverse() {
 		}
 	}
 
-	if ( closest_dist.x*closest_dist.x + closest_dist.y*closest_dist.y < 15*15 ) {
+	if ( closest_dist.x*closest_dist.x + closest_dist.y*closest_dist.y < 13*13 ) {
 		estado = GANO;
 		offset.x = offset.y = 0;
+		spr.setTexture(tex_victoria);
+		spr.setTextureRect(sf::IntRect(0, 0, 30, 30));
+		spr.setOrigin(15, 15);
+		sf::Vector2f pos_portal = spr_portal.getPosition();
+		spr.setPosition(pos_portal.x, pos_portal.y);
 	}
 }
 
