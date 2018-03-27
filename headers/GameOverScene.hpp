@@ -10,7 +10,7 @@ private:
 	sf::Text instrucciones_text;
 	sf::Font font;
 	sf::View view;
-
+	sf::Text score_text;
 	unsigned int puntos_jugador;
 
 public:

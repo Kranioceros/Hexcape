@@ -10,7 +10,7 @@ MenuScene::MenuScene() {
 	
 	font.loadFromFile("fonts/munro.ttf");
 	title_text.setFont(font);
-	title_text.setString("HEXCAPE 0.1");
+	title_text.setString("hexcape 0.2");
 	title_text.setCharacterSize(50);
 	title_text.setOrigin(title_text.getLocalBounds().width / 2.0,
 							 title_text.getLocalBounds().height / 2.0);

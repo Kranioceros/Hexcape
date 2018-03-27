@@ -172,9 +172,10 @@ void PlayScene::update(float elapsed){
 		case 0: // Muerto
 		{
 		sf::Time tiempo = tiempo_player.getElapsedTime();
-		if(tiempo.asMilliseconds() > tiempo_muerto)
+		if(tiempo.asMilliseconds() > tiempo_muerto){
 			Game::getInstance().switchScene(
 			new GameOverScene(puntos_jugador));
+		}
 		}
 		break;
 
