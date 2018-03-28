@@ -15,7 +15,7 @@ private:
 	
 public:
 	MenuScene();
-	void update(float elapsed) override;
+	void update(float elapsed, sf::Event e) override;
 	void draw(sf::RenderWindow &w) override;
 };
 

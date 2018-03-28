@@ -34,7 +34,7 @@ MenuScene::MenuScene() {
 	}
 }
 
-void MenuScene::update(float elapsed) {
+void MenuScene::update(float elapsed, sf::Event e) {
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
 		Game::getInstance().switchScene(new TransitionScene(0, 0));
 	}

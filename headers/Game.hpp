@@ -32,7 +32,7 @@ private:
 	sf::Clock clock;
 	
 	void processEvents();
-	void update();
+	void update(sf::Event e);
 	void draw();
 	static Game *instance;
 	Game();

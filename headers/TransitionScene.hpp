@@ -14,7 +14,7 @@ private:
 	unsigned int puntos_jugador;
 public:
 	TransitionScene(unsigned int _nro_nivel, unsigned int _puntos_jugador);
-	void update(float elapsed) override;
+	void update(float elapsed, sf::Event e) override;
 	void draw(sf::RenderWindow &w) override;
 
 };

@@ -18,7 +18,7 @@ public:
 	BaseScene();
 	
 	/// función que será invocada para actualizar la escena
-	virtual void update(float elapsed);
+	virtual void update(float elapsed, sf::Event e);
 	
 	/// función que será invocada para dibujar la escena
 	virtual void draw(sf::RenderWindow &w);

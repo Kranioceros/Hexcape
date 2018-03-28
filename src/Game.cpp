@@ -30,15 +30,25 @@ Game &Game::getInstance(){
 }
 
 void Game::run(){
+  bool evento_nuevo = false;
 	while(window.isOpen() && currentScene != nullptr) {
 		sf::Event e;
 		while(window.pollEvent(e)){
 			if(e.type == sf::Event::Closed){
 				window.close();
 			}
+      if(e.type == sf::Event::KeyPressed || e.type == sf::Event::TextEntered)
+        evento_nuevo = true;
 		}
 		draw();
-		update();
+    if (evento_nuevo) {
+      update(e);
+      evento_nuevo = false;
+    } else {
+      sf::Event null_ev;
+      null_ev.type = sf::Event::Count;
+      update(null_ev);
+    }
 		if(nextScene != nullptr){
 			delete currentScene;
 			currentScene = nextScene;
@@ -51,8 +61,8 @@ void Game::run(){
 
 
 
-void Game::update(){
-	currentScene->update(clock.getElapsedTime().asSeconds());
+void Game::update(sf::Event e){
+	currentScene->update(clock.getElapsedTime().asSeconds(), e);
 	clock.restart();
 }
 

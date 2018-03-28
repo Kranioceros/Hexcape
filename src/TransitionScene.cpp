@@ -25,7 +25,7 @@ TransitionScene::TransitionScene(unsigned _nro_nivel, unsigned int _puntos_jugad
 	title_text.setPosition(1920 / 2, 1080 / 2);
 }
 
-void TransitionScene::update(float elapsed) {
+void TransitionScene::update(float elapsed, sf::Event e) {
 	sf::Time tiempo_espera = espera_clock.getElapsedTime();
 	if(tiempo_espera.asSeconds() > 1) {
 		espera_clock.restart();

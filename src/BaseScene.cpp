@@ -5,7 +5,7 @@ BaseScene::BaseScene() {
 	
 }
 
-void BaseScene::update(float elapsed) {	
+void BaseScene::update(float elapsed, sf::Event e) {	
 	for(auto e: entities){
 		e->update(elapsed);
 	}

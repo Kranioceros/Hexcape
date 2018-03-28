@@ -82,7 +82,7 @@ PlayScene::PlayScene(unsigned int _num_nivel, unsigned int _puntos_jugador)
 	tiempo_score.restart();
 }
 
-void PlayScene::update(float elapsed){
+void PlayScene::update(float elapsed, sf::Event e){
 	/* Se agregan nuevas bolas dependiendo del timer */
 
 	sf::Time bolas_time = bolas_clock.getElapsedTime();
@@ -121,7 +121,7 @@ void PlayScene::update(float elapsed){
 	spr_portal.rotate(2);
 	
 	/* Se actualizan todas las demas entidades */
-	BaseScene::update(elapsed);
+	BaseScene::update(elapsed, e);
 	view.move(player->verOffset());
 
 	/* Se actualiza la posicion del fondo si el jugador se movio fuera del

@@ -40,7 +40,7 @@ private:
 public:
 	PlayScene(unsigned int _num_nivel, unsigned int _puntos_jugador);
 	virtual ~PlayScene() override;
-	void update(float elapsed) override;
+	void update(float elapsed, sf::Event e) override;
 	void draw(sf::RenderWindow &w) override;
 };
 
