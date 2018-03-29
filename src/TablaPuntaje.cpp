@@ -124,7 +124,8 @@ void TablaPuntaje::dibujar(float x, float y, sf::RenderWindow &w) {
         }
       } else {
         unsigned int pos = 1;
-        for (auto it = tabla.begin(); it < tabla.end(); it++) {
+        auto it_end = tabla.size() <= 10 ? tabla.end() : tabla.begin()+10;
+        for (auto it = tabla.begin(); it < it_end; it++) {
           tabla_ss
             << std::left << std::setw(8)  << std::setfill(' ') << pos
             << std::left << std::setw(25) << std::setfill(' ') << it->nombre
