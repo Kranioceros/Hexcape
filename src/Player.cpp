@@ -18,7 +18,7 @@ Player::Player(unsigned int x, unsigned int y, const std::vector<Pared> *p, cons
 	sf::FloatRect dim_mensaje = mensaje_spr.getLocalBounds();
 	mensaje_spr.setOrigin(dim_mensaje.width / 2, dim_mensaje.height / 2);
 
-	hitbox_tex.loadFromFile("assets/akira_hitbox.png");
+	hitbox_tex.loadFromFile("assets/player_hitbox.png");
 	hitbox_spr.setTexture(hitbox_tex);
 	hitbox_spr.setOrigin(10, 10);
 	hitbox_spr.setPosition(x, y);
