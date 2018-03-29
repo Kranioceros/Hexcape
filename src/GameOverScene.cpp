@@ -9,7 +9,7 @@
 #include <vector>
 #include <algorithm>
 
-GameOverScene::GameOverScene(unsigned int _puntos_jugador) : tabla("leaderboard.bin", _puntos_jugador) {
+GameOverScene::GameOverScene(unsigned int _puntos_jugador) : tabla("leaderboard", _puntos_jugador) {
 	puntos_jugador = _puntos_jugador;
 
 	view.reset(sf::FloatRect(0, 0, 1920, 1080));
