@@ -10,7 +10,6 @@ private:
   sf::Text credits_text;
 	sf::Font font;
 	sf::View view;
-	sf::Music devilman;
 	sf::Texture portal;
 	sf::Sprite spr_portal;
 

@@ -36,10 +36,6 @@ MenuScene::MenuScene() {
 	spr_portal.setOrigin(45, 45);
 	spr_portal.setPosition(1920/2,1080/2);
 	spr_portal.setScale(20,20);
-
-	if (!devilman.openFromFile("sounds/devilman-no-uta.ogg")){
-	std::cout<<"no abrio devilmannouta"<<std::endl;
-	}
 }
 
 void MenuScene::update(float elapsed, sf::Event e) {
@@ -47,12 +43,6 @@ void MenuScene::update(float elapsed, sf::Event e) {
 		Game::getInstance().switchScene(new TransitionScene(0, 0));
 	}
 	spr_portal.rotate(2);
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-		devilman.play();
-	}
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-		devilman.pause();
-	}
 }
 
 void MenuScene::draw(sf::RenderWindow &w) {
