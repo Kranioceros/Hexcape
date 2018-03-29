@@ -12,7 +12,7 @@ Game &Game::create(const sf::VideoMode &videoMode, BaseScene *scene, const strin
 		cerr<<"ERROR: can't call create(), game already running."<<endl;
 	}else{
 		Game & g = getInstance();
-		g.window.create(videoMode, name, sf::Style::Close);
+		g.window.create(videoMode, name, sf::Style::Fullscreen);
 		g.nextScene = nullptr;
 		g.currentScene = scene;
 		g.window.setFramerateLimit(60);
