@@ -152,13 +152,9 @@ void PlayScene::update(float elapsed, sf::Event e){
 
 	/* Se actualiza el mensaje debug */
 	stringstream ss;
-	int tamanio = lab.VerGrilla().ancho();
-	ss << "Nro nivel: " << num_nivel << std::endl
-	   << "Tamanio del laberinto: " << tamanio << "x" << tamanio << std::endl
-	   << "Nro. de bolas: " << bolas.size() << "/" << max_bolas << std::endl
-	   << "Velocidad de spawneo: " << tiempo_spawn_bolas << std::endl
-	   << "Puntos de escena: " << puntos_escena << std::endl
-	   << "Puntos de jugador: " << puntos_jugador << std::endl;
+	ss << "NIVEL: " << num_nivel << std::endl
+	   << "PUNTOS: " << puntos_escena << std::endl
+     << "PUNTOS JUGADOR: " << puntos_jugador << std::endl;
 	debug.setString(ss.str());
 
 	debug.move(player->verOffset().x, player->verOffset().y);

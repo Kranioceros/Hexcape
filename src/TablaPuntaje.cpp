@@ -32,18 +32,13 @@ bool TablaPuntaje::leerPuntaje() {
     /* Se crea el archivo en cuestion */
     std::ofstream archivo_out(nombre_archivo, std::ios::binary);
     archivo_out.close();
-    std::cout << "El archivo no existe, se crea uno nuevo..." << std::endl;
     return false;
   } else {
     archivo_in.seekg(0);
     Entrada tmp;
     while(archivo_in.read(reinterpret_cast<char*> (&tmp), sizeof(Entrada))) {
       tabla.push_back(tmp);
-      std::cout << "Se ha leido una entrada: " << std::endl;
-      std::cout << "Nombre: " << tmp.nombre << std::endl
-                << "Puntuacion: " << tmp.puntos << std::endl;
     }
-    std::cout << "---------------------------------" << std::endl;
   }
   return true;
 }
@@ -52,11 +47,7 @@ void TablaPuntaje::escribirPuntaje() {
   std::ofstream archivo_out(nombre_archivo, std::ios::binary);
   for(const Entrada &e : tabla) {
     archivo_out.write(reinterpret_cast<const char*>(&e), sizeof(Entrada));
-    std::cout << "Se ha escrito una entrada:" << std::endl;
-    std::cout << "Nombre: " << e.nombre << std::endl
-              << "Puntuacion: " << e.puntos << std::endl;
   }
-  std::cout << "---------------------------------" << std::endl;
 }
 
 void TablaPuntaje::dibujar(float x, float y, sf::RenderWindow &w) {
