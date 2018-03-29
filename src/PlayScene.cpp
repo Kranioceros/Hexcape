@@ -29,7 +29,7 @@ PlayScene::PlayScene(unsigned int _num_nivel, unsigned int _puntos_jugador)
 	tiempo_spawn_bolas = 0.39169*pow(num_nivel, -0.55352);
 	max_bolas = 1.2*pow(lab.VerGrilla().ancho(), 2) + 2*num_nivel; 
 	
-	bola.loadFromFile("assets/bola2.png");
+	bola.loadFromFile("assets/skull_spritesheet.png");
 	escotilla.loadFromFile("assets/escotillas-516x86.png");
 	portal.loadFromFile("assets/portal.png");
 	fondo.loadFromFile("assets/fondo.png");

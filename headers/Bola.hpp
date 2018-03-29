@@ -12,6 +12,7 @@ private:
 	sf::Sprite spr;
 	float x, y, rapidez;
 	float tiempo_spawn;
+  float tiempo_animacion;
 	enum {SPAWNING, NORMAL, DESAPARECIENDO} estado;
 	sf::Vector2f velocidad;
 	const std::vector<Pared> *paredes;
@@ -22,9 +23,10 @@ private:
 	sf::Clock clock_spawn;
 	sf::Clock clock_desapareciendo;
 	sf::Clock clock_intermitencia;
+  sf::Clock clock_animacion;
 
 	void moverse();
-	
+
 public:
 	Bola(float _x, float _y, float angulo, float _rapidez, float _tiempo_spawn, const sf::Texture &_tex, const std::vector<Pared> *_paredes);
 	~Bola();

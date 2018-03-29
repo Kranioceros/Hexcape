@@ -7,6 +7,7 @@ Bola::Bola(float _x, float _y, float angulo, float _rapidez, float _tiempo_spawn
 	x = _x; y = _y; rapidez = _rapidez;
 	paredes = _paredes;
 	tiempo_spawn = _tiempo_spawn;
+  tiempo_animacion = 125;
 	estado = SPAWNING;
 	desaparecida = false;
 	se_dibuja = true;
@@ -14,14 +15,28 @@ Bola::Bola(float _x, float _y, float angulo, float _rapidez, float _tiempo_spawn
 
 	velocidad.x = sin(angulo) * rapidez;
 	velocidad.y = cos(angulo) * rapidez;
-	spr.setPosition(x, y);
+
 	spr.setTexture(tex);
+  spr.setTextureRect(sf::IntRect(0,0,18,18));
+  spr.setOrigin(9, 9);
+	spr.setPosition(x, y);
+
 	clock_spawn.restart();
 	clock_intermitencia.restart();
 	clock_desapareciendo.restart();
+  clock_animacion.restart();
 }
 
 void Bola::update(float elapsed) {
+
+  /* Se actualiza el fotograma */
+  if(clock_animacion.getElapsedTime().asMilliseconds() > tiempo_animacion) {
+    clock_animacion.restart();
+    sf::IntRect pos_sprite = spr.getTextureRect();
+    pos_sprite.left = (pos_sprite.left + 18) % 144;
+    spr.setTextureRect(pos_sprite);
+  }
+
 	switch(estado) {
 		case NORMAL:
 		moverse();
