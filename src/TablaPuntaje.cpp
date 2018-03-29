@@ -18,7 +18,7 @@ TablaPuntaje::TablaPuntaje(std::string _nombre_archivo, unsigned int puntuacion)
   font_mono.loadFromFile("fonts/COURIER.TTF");
   pos_cursor = 0;
   periodo_cursor = 500;
-  periodo_delay = 1000;
+  periodo_delay = 200;
   timer_cursor.restart();
   cursor_mostrar = true;
 
@@ -158,18 +158,28 @@ void TablaPuntaje::actualizar(sf::Event e) {
     }
   }
   else if (estado == INGRESANDO){
-    /* Si el jugador ingreso un caracter ASCII imprimible */
     if(e.type == sf::Event::TextEntered) {
+      /* Si el jugador ingreso un caracter ASCII imprimible */
       if(e.text.unicode > 32 && e.text.unicode < 127) {
         nombre_jugador[pos_cursor] = static_cast<char>(e.text.unicode);
         pos_cursor = pos_cursor < 19 ? (pos_cursor+1) : pos_cursor;
+      }
+      /* Si el jugador presiono backspace, se borra un caracter */
+      if(e.text.unicode == 8) {
+        if(nombre_jugador[pos_cursor] == '\0' &&
+           pos_cursor > 0 &&
+           nombre_jugador[pos_cursor-1] != '\0')
+          {
+            pos_cursor--; 
+            nombre_jugador[pos_cursor] = '\0';
+          }
       }
     }
     /* Si el jugador toco una flecha para mover el cursor */
     if(e.type == sf::Event::KeyPressed) {
       if(e.key.code == sf::Keyboard::Right) {
         unsigned int nueva_pos = (pos_cursor + 1) % 20;
-        if (nombre_jugador[nueva_pos] != '\0')
+        if (nombre_jugador[pos_cursor] != '\0')
           pos_cursor = nueva_pos;
       }
       if(e.key.code == sf::Keyboard::Left) {
@@ -190,7 +200,7 @@ void TablaPuntaje::actualizar(sf::Event e) {
                                       tabla.end(),
                                       [&tmp](Entrada x) {
                                         return x.puntos == tmp.puntos && strcmp(x.nombre, tmp.nombre) == 0;});
-      if (it_identico == tabla.end()) {
+      if (it_identico == tabla.end()){
         /* Se agrega a la tabla y se reordena */
         tabla.push_back(tmp);
         std::sort(tabla.begin(),
