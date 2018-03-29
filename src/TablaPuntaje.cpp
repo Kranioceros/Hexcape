@@ -85,8 +85,10 @@ void TablaPuntaje::dibujar(float x, float y, sf::RenderWindow &w) {
     auto it_jugador =
       std::find_if(tabla.begin(),
                    tabla.end(),
-                   [this](Entrada x) { return strcmp(this->nombre_jugador.c_str(), x.nombre) == 0;}
-                   );
+                   [this](Entrada x) {
+                     return strcmp(this->nombre_jugador.c_str(), x.nombre) == 0 &&
+                            this->puntos_jugador == x.puntos;
+                   });
 
     if (it_jugador != tabla.end()) {
       /* Primera fila de la tabla con las etiquetas */
