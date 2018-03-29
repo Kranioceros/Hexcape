@@ -1,4 +1,4 @@
-PROGRAM=hexcape
+PROGRAM=hexcape.bin
 BUILD_DIR=Build.lnx
 SRC_DIR=src
 GPP=g++

@@ -1,9 +1,9 @@
 Build.lnx/*
 Build.w32/*
 *.swp
+*.bin
+*.exe
 .ycm_extra_conf.py
-hexcape
-hexcape.exe
 windows-libs
 leaderboard.bin
 .clang_complete
