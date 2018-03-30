@@ -2,6 +2,7 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <iostream>
+
 using namespace std;
 
 Game *Game::instance = nullptr;
